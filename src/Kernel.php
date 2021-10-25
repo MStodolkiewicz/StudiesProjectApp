@@ -9,7 +9,6 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 class Kernel extends BaseKernel
 {
-//    dupa
     use MicroKernelTrait;
 
     protected function configureContainer(ContainerConfigurator $container): void
