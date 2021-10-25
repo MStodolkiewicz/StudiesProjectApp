@@ -8,8 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=IngredientRepository::class)
+ * @ApiResource
  */
-#[ApiResource]
+
 class Ingredient
 {
     /**
