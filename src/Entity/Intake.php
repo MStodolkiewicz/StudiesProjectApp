@@ -20,7 +20,7 @@ class Intake
     private $id;
 
     /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
+     * @ORM\Column(type="decimal", precision=7, scale=2)
      */
     private $amountInGrams;
 
