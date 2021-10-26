@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -64,6 +66,40 @@ class Product
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
     private $kcal;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="product", orphanRemoval=true)
+     */
+    private $rates;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Ingredient::class, mappedBy="product", orphanRemoval=true)
+     */
+    private $ingredients;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Intake::class, inversedBy="products")
+     */
+    private $intakes;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    public function __construct()
+    {
+        $this->rates = new ArrayCollection();
+        $this->ingredients = new ArrayCollection();
+        $this->intakes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -186,6 +222,114 @@ class Product
     public function setKcal(string $kcal): self
     {
         $this->kcal = $kcal;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rate[]
+     */
+    public function getRates(): Collection
+    {
+        return $this->rates;
+    }
+
+    public function addRate(Rate $rate): self
+    {
+        if (!$this->rates->contains($rate)) {
+            $this->rates[] = $rate;
+            $rate->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRate(Rate $rate): self
+    {
+        if ($this->rates->removeElement($rate)) {
+            // set the owning side to null (unless already changed)
+            if ($rate->getProduct() === $this) {
+                $rate->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ingredient[]
+     */
+    public function getIngredients(): Collection
+    {
+        return $this->ingredients;
+    }
+
+    public function addIngredient(Ingredient $ingredient): self
+    {
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients[] = $ingredient;
+            $ingredient->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredient(Ingredient $ingredient): self
+    {
+        if ($this->ingredients->removeElement($ingredient)) {
+            // set the owning side to null (unless already changed)
+            if ($ingredient->getProduct() === $this) {
+                $ingredient->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Intake[]
+     */
+    public function getIntakes(): Collection
+    {
+        return $this->intakes;
+    }
+
+    public function addIntake(Intake $intake): self
+    {
+        if (!$this->intakes->contains($intake)) {
+            $this->intakes[] = $intake;
+        }
+
+        return $this;
+    }
+
+    public function removeIntake(Intake $intake): self
+    {
+        $this->intakes->removeElement($intake);
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
