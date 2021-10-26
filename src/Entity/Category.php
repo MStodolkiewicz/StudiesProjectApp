@@ -32,14 +32,14 @@ class Category
     private $products;
 
     /**
-     * @ORM\OneToMany(targetEntity=Subcategory::class, mappedBy="category", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=SubCategory::class, mappedBy="category", orphanRemoval=true)
      */
-    private $subcategories;
+    private $subCategories;
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
-        $this->subcategories = new ArrayCollection();
+        $this->subCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,29 +90,29 @@ class Category
     }
 
     /**
-     * @return Collection|Subcategory[]
+     * @return Collection|SubCategory[]
      */
-    public function getSubcategories(): Collection
+    public function getSubCategories(): Collection
     {
-        return $this->subcategories;
+        return $this->subCategories;
     }
 
-    public function addSubcategory(Subcategory $subcategory): self
+    public function addSubCategory(SubCategory $subCategory): self
     {
-        if (!$this->subcategories->contains($subcategory)) {
-            $this->subcategories[] = $subcategory;
-            $subcategory->setCategory($this);
+        if (!$this->subCategories->contains($subCategory)) {
+            $this->subCategories[] = $subCategory;
+            $subCategory->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeSubcategory(Subcategory $subcategory): self
+    public function removeSubCategory(SubCategory $subCategory): self
     {
-        if ($this->subcategories->removeElement($subcategory)) {
+        if ($this->subCategories->removeElement($subCategory)) {
             // set the owning side to null (unless already changed)
-            if ($subcategory->getCategory() === $this) {
-                $subcategory->setCategory(null);
+            if ($subCategory->getCategory() === $this) {
+                $subCategory->setCategory(null);
             }
         }
 
