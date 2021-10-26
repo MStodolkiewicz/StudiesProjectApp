@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Subcategory;
+use App\Entity\SubCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Subcategory|null find($id, $lockMode = null, $lockVersion = null)
- * @method Subcategory|null findOneBy(array $criteria, array $orderBy = null)
- * @method Subcategory[]    findAll()
- * @method Subcategory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method SubCategory|null find($id, $lockMode = null, $lockVersion = null)
+ * @method SubCategory|null findOneBy(array $criteria, array $orderBy = null)
+ * @method SubCategory[]    findAll()
+ * @method SubCategory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SubcategoryRepository extends ServiceEntityRepository
+class SubCategoryRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Subcategory::class);
+        parent::__construct($registry, SubCategory::class);
     }
 
     // /**
-    //  * @return Subcategory[] Returns an array of Subcategory objects
+    //  * @return SubCategory[] Returns an array of SubCategory objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class SubcategoryRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Subcategory
+    public function findOneBySomeField($value): ?SubCategory
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.exampleField = :val')

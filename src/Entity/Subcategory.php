@@ -3,14 +3,15 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\SubcategoryRepository;
+use App\Repository\SubCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
- * @ORM\Entity(repositoryClass=SubcategoryRepository::class)
+ * @ORM\Entity(repositoryClass=SubCategoryRepository::class)
+ * @ApiResource
  */
-class Subcategory
+
+class SubCategory
 {
     /**
      * @ORM\Id
