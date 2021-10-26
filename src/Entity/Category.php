@@ -32,7 +32,7 @@ class Category
     private $products;
 
     /**
-     * @ORM\OneToMany(targetEntity=subcategory::class, mappedBy="category", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Subcategory::class, mappedBy="category", orphanRemoval=true)
      */
     private $subcategories;
 
@@ -90,14 +90,14 @@ class Category
     }
 
     /**
-     * @return Collection|subcategory[]
+     * @return Collection|Subcategory[]
      */
     public function getSubcategories(): Collection
     {
         return $this->subcategories;
     }
 
-    public function addSubcategory(subcategory $subcategory): self
+    public function addSubcategory(Subcategory $subcategory): self
     {
         if (!$this->subcategories->contains($subcategory)) {
             $this->subcategories[] = $subcategory;
@@ -107,7 +107,7 @@ class Category
         return $this;
     }
 
-    public function removeSubcategory(subcategory $subcategory): self
+    public function removeSubcategory(Subcategory $subcategory): self
     {
         if ($this->subcategories->removeElement($subcategory)) {
             // set the owning side to null (unless already changed)
