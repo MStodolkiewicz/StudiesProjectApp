@@ -12,7 +12,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *     normalizationContext={"groups"={"user:read"}},
+ *     denormalizationContext={"groups"={"user:write"}}
+ *     )
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -20,57 +23,68 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"user:read","user:write"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"user:read","user:write"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups({"user:read","user:write"})
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
+     * @Groups({"user:read","user:write"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read","user:write"})
      */
     private $height;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read","user:write"})
      */
     private $weight;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"user:read","user:write"})
      */
     private $birthDate;
 
     /**
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="user")
+     * @Groups({"user:read"})
      */
     private $products;
 
     /**
      * @ORM\OneToMany(targetEntity=Intake::class, mappedBy="user", orphanRemoval=true)
+     * @Groups({"user:read","user:write"})
      */
     private $intakes;
 
     /**
      * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="user", orphanRemoval=true)
+     * @Groups({"user:read"})
      */
     private $rates;
 

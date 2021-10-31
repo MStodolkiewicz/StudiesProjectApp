@@ -7,8 +7,11 @@ use App\Repository\RateRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass=RateRepository::class)
+ * @ApiResource(
+ *     normalizationContext={"groups"={"rate:read"}},
+ *     denormalizationContext={"groups"={"rate:write"}}
+ *     )
  */
 class Rate
 {
@@ -16,11 +19,13 @@ class Rate
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"rate:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"rate:read","rate:write"})
      */
     private $value;
 
@@ -33,6 +38,7 @@ class Rate
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rates")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"rate:read","rate:write"})
      */
     private $user;
 

@@ -7,8 +7,12 @@ use App\Repository\IngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ *
  * @ORM\Entity(repositoryClass=IngredientRepository::class)
+ * @ApiResource(
+ *     normalizationContext={"groups"={"ingredient:read"}},
+ *     denormalizationContext={"groups"={"ingredient:write"}}
+ *     )
  */
 class Ingredient
 {
@@ -16,17 +20,20 @@ class Ingredient
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"ingredient:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"ingredient:read","ingredient:write"})
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="ingredients")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"ingredient:read"})
      */
     private $product;
 

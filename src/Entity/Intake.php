@@ -9,8 +9,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass=IntakeRepository::class)
+ *  @ApiResource(
+ *     normalizationContext={"groups"={"intake:read"}},
+ *     denormalizationContext={"groups"={"intake:write"}}
+ *     )
  */
 class Intake
 {
@@ -18,22 +21,26 @@ class Intake
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"intake:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="decimal", precision=7, scale=2)
+     * @Groups({"intake:read","intake:write"})
      */
     private $amountInGrams;
 
     /**
      * @ORM\ManyToMany(targetEntity=Product::class, mappedBy="intakes")
+     * @Groups({"intake:read"})
      */
     private $products;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="intakes")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"intake:read","intake:write"})
      */
     private $user;
 

@@ -8,7 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=SubCategoryRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *     normalizationContext={"groups"={"subCategory:read"}},
+ *     denormalizationContext={"groups"={"subCategory:write"}}
+ *     )
  */
 
 class SubCategory
@@ -17,17 +20,20 @@ class SubCategory
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"subCategory:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"subCategory:read","subCategory:write"})
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="subCategories")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"subCategory:read"})
      */
     private $category;
 
