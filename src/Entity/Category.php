@@ -9,8 +9,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @ApiResource(
+ *     normalizationContext={"groups"={"category:read"}},
+ *     denormalizationContext={"groups"={"category:write"}}
+ *     )
  */
 class Category
 {

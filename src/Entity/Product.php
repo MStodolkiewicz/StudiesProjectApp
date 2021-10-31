@@ -7,10 +7,15 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *  normalizationContext={"groups"={"product:read"}},
+ *  denormalizationContext={"groups"={"product:write"}}
+ * )
  */
 
 class Product
@@ -19,78 +24,95 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"product:read"})
+     *
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=13)
+     * @Groups({"product:read","product:write"})
+     * @Assert\NotBlank()
      */
     private $barCodeNumbers;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"product:read","product:write"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"product:read","product:write"})
      */
     private $brand;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"product:read"})
      */
-    private $isVerified;
+    private $isVerified = false;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"product:read"})
      */
-    private $isDeleted;
+    private $isDeleted = false;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Groups({"product:read","product:write"})
      */
     private $proteins;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Groups({"product:read","product:write"})
      */
     private $carbohydrates;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
+     * @Groups({"product:read","product:write"})
      */
     private $fat;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
+     * @Groups({"product:read","product:write"})
      */
     private $kcal;
 
     /**
      * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="product", orphanRemoval=true)
+     * @Groups({"product:read"})
      */
     private $rates;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"product:read","product:write"})
      */
     private $category;
 
     /**
      * @ORM\OneToMany(targetEntity=Ingredient::class, mappedBy="product", orphanRemoval=true)
+     * @Groups({"product:read","product:write"})
      */
     private $ingredients;
 
     /**
      * @ORM\ManyToMany(targetEntity=Intake::class, inversedBy="products")
+     * @Groups({"product:read"})
      */
     private $intakes;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"product:read"})
      */
     private $user;
 
@@ -127,6 +149,12 @@ class Product
     {
         $this->name = $name;
 
+        return $this;
+    }
+
+    public function setRateAdmin():self
+    {
+        $this->user = new User();
         return $this;
     }
 
