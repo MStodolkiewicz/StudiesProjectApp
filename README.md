@@ -7,6 +7,8 @@
 
 **3.** _Trzeba edzie ją odpalić jak już wszystko będzie śmigać, albo jak dowiem się jak zgrać ją z dokumentacją open-api._
 
+**4.** _Dla zainteresowanych:_: [Lexik Bundle Link](https://github.com/lexik/LexikJWTAuthenticationBundle/blob/2.x/Resources/doc/index.md#installation)
+
 ### **UNIT TESTS**
 **1.** Przed wykonaniem testów należy pamiętać o utworzeniu bazy testowej:
 
@@ -15,4 +17,6 @@
 **2.** _Po utworzeniu testowej bazy trzeba pamiętać o uaktualnieniu jej migracjami:_
 
 `php bin/console doctrine:migrations:migrate -n --env=test`
+
+**3.** _Dla zainteresowanych:_: [Ino dot. testów w symfony](https://symfony.com/doc/current/the-fast-track/en/17-tests.html)
 
