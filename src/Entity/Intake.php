@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\IntakeRepository;
+use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\Collection;
@@ -118,6 +119,14 @@ class Intake
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @Groups({"category:read"})
+     */
+    public function getCreatedAtAgo(): string
+    {
+        return Carbon::instance($this->getCreatedAt())->diffForHumans();
     }
 
     public function setCreatedAt(\DateTimeImmutable $createdAt): self

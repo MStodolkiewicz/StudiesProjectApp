@@ -334,7 +334,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->createdAt;
     }
 
-    public function getCreatedAtAgo(): string{
+    /**
+     * @Groups({"category:read"})
+     */
+    public function getCreatedAtAgo(): string
+    {
         return Carbon::instance($this->getCreatedAt())->diffForHumans();
     }
 

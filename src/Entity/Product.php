@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
+use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -375,6 +376,14 @@ class Product
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @Groups({"category:read"})
+     */
+    public function getCreatedAtAgo(): string
+    {
+        return Carbon::instance($this->getCreatedAt())->diffForHumans();
     }
 
     public function setCreatedAt(\DateTimeImmutable $createdAt): self

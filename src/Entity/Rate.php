@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\RateRepository;
+use Carbon\Carbon;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -99,6 +100,14 @@ class Rate
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @Groups({"category:read"})
+     */
+    public function getCreatedAtAgo(): string
+    {
+        return Carbon::instance($this->getCreatedAt())->diffForHumans();
     }
 
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
