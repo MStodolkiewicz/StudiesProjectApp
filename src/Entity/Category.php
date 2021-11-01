@@ -6,14 +6,19 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  * @ApiResource(
  *     normalizationContext={"groups"={"category:read"}},
- *     denormalizationContext={"groups"={"category:write"}}
+ *     denormalizationContext={"groups"={"category:write"}},
+ *     attributes={
+ *          "pagination_items_per_page"=1
+ *     }
  *     )
+ *
  */
 class Category
 {

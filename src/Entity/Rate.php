@@ -4,13 +4,17 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\RateRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=RateRepository::class)
  * @ApiResource(
  *     normalizationContext={"groups"={"rate:read"}},
- *     denormalizationContext={"groups"={"rate:write"}}
+ *     denormalizationContext={"groups"={"rate:write"}},
+ *     attributes={
+ *          "pagination_items_per_page"=1
+ *     }
  *     )
  */
 class Rate

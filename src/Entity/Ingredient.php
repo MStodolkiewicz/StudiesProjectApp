@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\IngredientRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,7 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=IngredientRepository::class)
  * @ApiResource(
  *     normalizationContext={"groups"={"ingredient:read"}},
- *     denormalizationContext={"groups"={"ingredient:write"}}
+ *     denormalizationContext={"groups"={"ingredient:write"}},
+ *     attributes={
+ *          "pagination_items_per_page"=1
+ *     }
  *     )
  */
 class Ingredient

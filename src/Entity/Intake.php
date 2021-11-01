@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\IntakeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,7 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=IntakeRepository::class)
  *  @ApiResource(
  *     normalizationContext={"groups"={"intake:read"}},
- *     denormalizationContext={"groups"={"intake:write"}}
+ *     denormalizationContext={"groups"={"intake:write"}},
+ *     attributes={
+ *          "pagination_items_per_page"=1
+ *     }
  *     )
  */
 class Intake

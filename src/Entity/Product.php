@@ -14,12 +14,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  * @ApiResource(
  *  normalizationContext={"groups"={"product:read"}},
- *  denormalizationContext={"groups"={"product:write"}}
+ *  denormalizationContext={"groups"={"product:write"}},
+ *  attributes={
+ *       "pagination_items_per_page"=1
+ *  }
  * )
  */
 
 class Product
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
