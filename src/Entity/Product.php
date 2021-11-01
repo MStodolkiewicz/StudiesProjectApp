@@ -123,13 +123,14 @@ class Product
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private $CreatedAt;
+    private $createdAt;
 
     public function __construct()
     {
         $this->rates = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
         $this->intakes = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -373,12 +374,12 @@ class Product
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->CreatedAt;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $CreatedAt): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->CreatedAt = $CreatedAt;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
