@@ -48,6 +48,11 @@ class Category
      */
     private $subCategories;
 
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $CreatedAt;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -127,6 +132,18 @@ class Category
                 $subCategory->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->CreatedAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $CreatedAt): self
+    {
+        $this->CreatedAt = $CreatedAt;
 
         return $this;
     }

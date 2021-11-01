@@ -41,6 +41,11 @@ class SubCategory
      */
     private $category;
 
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $CreatedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -66,6 +71,18 @@ class SubCategory
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->CreatedAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $CreatedAt): self
+    {
+        $this->CreatedAt = $CreatedAt;
 
         return $this;
     }

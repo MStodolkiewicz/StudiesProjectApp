@@ -93,6 +93,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $rates;
 
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $CreatedAt;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -318,6 +323,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $rate->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->CreatedAt;
+    }
+
+    
+
+    public function setCreatedAt(\DateTimeImmutable $CreatedAt): self
+    {
+        $this->CreatedAt = $CreatedAt;
 
         return $this;
     }
