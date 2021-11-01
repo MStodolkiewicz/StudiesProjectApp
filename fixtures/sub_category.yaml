@@ -1,0 +1,6 @@
+# /fixtures/sub_category.yaml
+App\Entity\SubCategory:
+  sub_category_{1..50}:
+    name: '<sentence(2)>'
+    createdAt: '<(new \DateTimeImmutable())>'
+    category: '@category_*'

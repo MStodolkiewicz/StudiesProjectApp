@@ -1,0 +1,12 @@
+# /fixtures/user.yaml
+App\Entity\User:
+  user_{1..50}:
+    email: '<email()>'
+    roles: ['ROLE_USER']
+    password: 'fakePassword123!'
+    username: '<username()>'
+    height: '<numberBetween(1, 280)>'
+    weight: '<numberBetween(1, 280)>'
+    birthDate: <((new \DateTimeImmutable())->sub(new DateInterval('P1Y')))>
+    createdAt: '<(new \DateTimeImmutable())>'
+

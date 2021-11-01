@@ -1,0 +1,11 @@
+# /fixtures/intake.yaml
+App\Entity\Intake:
+  intake_{1..50}:
+    amountInGrams: '<numberBetween(1,1000)>'
+    products: '<numberBetween(1, 10)>x @product_*'
+    user: '@user_*'
+    createdAt: '<(new \DateTimeImmutable())>'
+
+
+
+

@@ -1,0 +1,6 @@
+# /fixtures/ingredient.yaml
+App\Entity\Ingredient:
+  ingredient_{1..50}:
+    name: '<sentence(1)>'
+    product: '@product_*'
+    createdAt: '<(new \DateTimeImmutable())>'

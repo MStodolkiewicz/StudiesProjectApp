@@ -1,0 +1,5 @@
+# /fixtures/category.yaml
+App\Entity\Category:
+  category_{1..50}:
+    name: '<sentence(2)>'
+    createdAt: '<(new \DateTimeImmutable())>'

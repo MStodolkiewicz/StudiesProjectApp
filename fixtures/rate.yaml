@@ -1,0 +1,8 @@
+# /fixtures/rate.yaml
+App\Entity\Rate:
+  rate_{1..50}:
+    value: '<numberBetween(1, 5)>'
+    user: '@user_*'
+    product: '@product_*'
+    createdAt: '<(new \DateTimeImmutable())>'
+
