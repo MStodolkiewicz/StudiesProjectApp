@@ -1,5 +1,19 @@
 # /fixtures/product.yaml
 App\Entity\Product:
+  product_51:
+    barCodeNumbers: '<numberBetween(1111111, 9999999)>'
+    name: '<sentence(2)>'
+    brand: '<sentence(3)>'
+    isVerified: 0
+    isDeleted: 0
+    proteins: '<numberBetween(1, 200)>'
+    carbohydrates: '<numberBetween(1, 200)>'
+    fat: '<numberBetween(1, 200)>'
+    kcal: '<numberBetween(1, 700)>'
+    user: '@user_*'
+    category: '@category_51'
+    createdAt: '<(new \DateTimeImmutable())>'
+
   product_{1..50}:
     barCodeNumbers: '<numberBetween(1111111, 9999999)>'
     name: '<sentence(2)>'

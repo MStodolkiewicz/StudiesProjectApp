@@ -1,5 +1,8 @@
 # /fixtures/category.yaml
 App\Entity\Category:
+  category_51:
+    name: 'Mushrooms'
+    createdAt: '<(new \DateTimeImmutable())>'
   category_{1..50}:
     name: '<sentence(2)>'
     createdAt: '<(new \DateTimeImmutable())>'
