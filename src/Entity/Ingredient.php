@@ -86,7 +86,7 @@ class Ingredient
     }
 
     /**
-     * @Groups({"category:read"})
+     * @Groups({"ingredient:read"})
      */
     public function getCreatedAtAgo(): string
     {

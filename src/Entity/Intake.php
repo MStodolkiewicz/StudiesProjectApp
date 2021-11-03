@@ -54,6 +54,12 @@ class Intake
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"intake:read","intake:write"})
+     */
+    private $mealType;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -122,7 +128,7 @@ class Intake
     }
 
     /**
-     * @Groups({"category:read"})
+     * @Groups({"intake:read"})
      */
     public function getCreatedAtAgo(): string
     {
@@ -132,6 +138,18 @@ class Intake
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getMealType(): ?string
+    {
+        return $this->mealType;
+    }
+
+    public function setMealType(string $mealType): self
+    {
+        $this->mealType = $mealType;
 
         return $this;
     }

@@ -31,7 +31,7 @@ class SubCategory
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"subCategory:read","subCategory:write"})
+     * @Groups({"subCategory:read","subCategory:write", "category:read"})
      */
     private $name;
 
@@ -86,7 +86,7 @@ class SubCategory
     }
 
     /**
-     * @Groups({"category:read"})
+     * @Groups({"subCategory:read"})
      */
     public function getCreatedAtAgo(): string
     {

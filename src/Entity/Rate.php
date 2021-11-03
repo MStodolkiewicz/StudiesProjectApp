@@ -103,7 +103,7 @@ class Rate
     }
 
     /**
-     * @Groups({"category:read"})
+     * @Groups({"rate:read"})
      */
     public function getCreatedAtAgo(): string
     {

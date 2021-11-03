@@ -379,7 +379,7 @@ class Product
     }
 
     /**
-     * @Groups({"category:read"})
+     * @Groups({"product:read"})
      */
     public function getCreatedAtAgo(): string
     {

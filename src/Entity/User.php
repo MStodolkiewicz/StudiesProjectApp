@@ -335,7 +335,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @Groups({"category:read"})
+     * @Groups({"user:read"})
      */
     public function getCreatedAtAgo(): string
     {

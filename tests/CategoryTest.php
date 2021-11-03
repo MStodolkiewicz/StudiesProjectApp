@@ -6,6 +6,7 @@ namespace App\Tests;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Book;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
+use App\Entity\Category;
 
 class CategoryTest extends ApiTestCase
 {

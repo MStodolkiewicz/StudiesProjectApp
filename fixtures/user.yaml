@@ -1,5 +1,14 @@
 # /fixtures/user.yaml
 App\Entity\User:
+  user_51:
+    email: 'admin@admin.pl'
+    roles: [ 'ROLE_USER','ROLE_ADMIN' ]
+    password: \$2y\$13\$NSfO217x22kFR1.LfjeSVe4D5xmtuI1U5ppEjU0MPNScYtGcDviY.
+    username: 'admin'
+    height: '<numberBetween(1, 280)>'
+    weight: '<numberBetween(1, 280)>'
+    birthDate: <((new \DateTimeImmutable())->sub(new DateInterval('P1Y')))>
+    createdAt: '<(new \DateTimeImmutable())>'
   user_{1..50}:
     email: '<email()>'
     roles: ['ROLE_USER']
