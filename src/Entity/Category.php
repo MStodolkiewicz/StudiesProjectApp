@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
@@ -33,7 +34,9 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"category:read","category:write", "subCategory:read"})
+     * @Groups({"category:read", "category:write", "subCategory:read", "intake:read", "product:read"})
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $name;
 
@@ -45,6 +48,7 @@ class Category
     /**
      * @ORM\OneToMany(targetEntity=SubCategory::class, mappedBy="category", orphanRemoval=true, cascade={"persist"})
      * @Groups({"category:read","category:write"})
+     * @Assert\Valid()
      */
     private $subCategories;
 

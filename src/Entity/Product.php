@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
 use Carbon\Carbon;
@@ -10,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -20,8 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *       "pagination_items_per_page"=1
  *  }
  * )
+ * @ApiFilter(SearchFilter::class, properties={"barCodeNumbers": "exact"})
  */
-
 class Product
 {
 
@@ -38,73 +40,82 @@ class Product
      * @ORM\Column(type="string", length=13)
      * @Groups({"product:read","product:write"})
      * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $barCodeNumbers;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"product:read","product:write"})
+     * @Groups({"product:read", "product:write", "intake:read"})
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"product:read","product:write"})
+     * @Groups({"product:read", "product:write", "intake:read"})
      */
     private $brand;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"product:read"})
+     * @Groups({"product:read", "intake:read"})
      */
     private $isVerified = false;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"product:read"})
      */
     private $isDeleted = false;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
-     * @Groups({"product:read","product:write"})
+     * @Groups({"product:read", "product:write", "intake:read"})
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $proteins;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
-     * @Groups({"product:read","product:write"})
+     * @Groups({"product:read","product:write", "intake:read"})
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $carbohydrates;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
-     * @Groups({"product:read","product:write"})
+     * @Groups({"product:read","product:write", "intake:read"})
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $fat;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
-     * @Groups({"product:read","product:write"})
+     * @Groups({"product:read","product:write", "intake:read"})
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $kcal;
 
     /**
      * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="product", orphanRemoval=true)
-     * @Groups({"product:read"})
      */
     private $rates;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"product:read","product:write"})
+     * @Groups({"product:read","product:write", "intake:read"})
      */
     private $category;
 
     /**
      * @ORM\OneToMany(targetEntity=Ingredient::class, mappedBy="product", orphanRemoval=true)
-     * @Groups({"product:read","product:write"})
+     * @Groups({"product:read","product:write", "intake:read"})
      */
     private $ingredients;
 
@@ -112,7 +123,6 @@ class Product
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"product:read"})
      */
     private $user;
 
@@ -125,6 +135,12 @@ class Product
      * @ORM\OneToMany(targetEntity=Intake::class, mappedBy="product", orphanRemoval=true)
      */
     private $intakes;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="products")
+     * @Groups({"product:read","product:write", "intake:read"})
+     */
+    private $subCategory;
 
     public function __construct()
     {
@@ -163,7 +179,7 @@ class Product
         return $this;
     }
 
-    public function setRateAdmin():self
+    public function setRateAdmin(): self
     {
         $this->user = new User();
         return $this;
@@ -361,6 +377,20 @@ class Product
     {
         return Carbon::instance($this->getCreatedAt())->diffForHumans();
     }
+    /**
+     * @Groups({"product:read", "intake:read"})
+     */
+    public function getAvarageRate(): float
+    {
+
+        $avarage = 0;
+        foreach ($this->rates as $rate){
+            $avarage += $rate->getValue();
+        }
+        $avarage /= sizeof($this->rates);
+
+        return $avarage;
+    }
 
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
@@ -395,6 +425,18 @@ class Product
                 $intake->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSubCategory(): ?SubCategory
+    {
+        return $this->subCategory;
+    }
+
+    public function setSubCategory(?SubCategory $subCategory): self
+    {
+        $this->subCategory = $subCategory;
 
         return $this;
     }

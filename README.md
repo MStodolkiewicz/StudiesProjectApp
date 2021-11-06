@@ -40,6 +40,12 @@
     Najlepiej będzie to zroibć poprzez wysłanie zapytania `POSTMAN-em` i skopiowanie odpowiedzi do testu.
 
 
+Zrobione Encje : 
+Category, 
+SubCategory,
+Intake,
+Product -- do dokonczenia
+
 
 
 

@@ -36,15 +36,22 @@ class ProductRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Product
+
+    public function getAverageRate($id): ?float
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder('product')
+            ->select('avg(rate.value)')
+            ->leftJoin('product.rates','rate')
+            ->where('product.id = :id')
+            ->setParameter('id', $id)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getSingleScalarResult();
     }
-    */
+
 }
+
+//'SELECT AVG(rate.value)
+//from product
+//left join rate on product.id = rate.product_id
+//where product.id = 6;
+//'

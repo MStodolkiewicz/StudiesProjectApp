@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=IntakeRepository::class)
@@ -33,13 +34,15 @@ class Intake
     /**
      * @ORM\Column(type="decimal", precision=7, scale=2)
      * @Groups({"intake:read","intake:write"})
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $amountInGrams;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="intakes")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"intake:read","intake:write"})
+     * @Groups({"intake:read"})
      */
     private $user;
 
@@ -51,12 +54,17 @@ class Intake
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"intake:read","intake:write"})
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $mealType;
 
     /**
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="intakes")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"intake:read","intake:write"})
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $product;
 
