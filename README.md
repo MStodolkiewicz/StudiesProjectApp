@@ -18,7 +18,9 @@
 
 `php bin/console doctrine:migrations:migrate -n --env=test`
 
-**3.** _Dla zainteresowanych:_: [Info dot. testów w symfony](https://symfony.com/doc/current/the-fast-track/en/17-tests.html)
+**3.** _Testy wykonuje sie komendą `php bin/phpunit`_
+
+**4.** _Dla zainteresowanych:_: [Info dot. testów w symfony](https://symfony.com/doc/current/the-fast-track/en/17-tests.html)
 
 ### **ALICE BUNDLE**
 
