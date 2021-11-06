@@ -33,18 +33,17 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"category:read","category:write"})
+     * @Groups({"category:read","category:write", "subCategory:read"})
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")
-     * @Groups({"category:read","category:write"})
      */
     private $products;
 
     /**
-     * @ORM\OneToMany(targetEntity=SubCategory::class, mappedBy="category", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=SubCategory::class, mappedBy="category", orphanRemoval=true, cascade={"persist"})
      * @Groups({"category:read","category:write"})
      */
     private $subCategories;

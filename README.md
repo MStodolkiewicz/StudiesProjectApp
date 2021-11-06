@@ -32,6 +32,13 @@
 
 **3** _Dla zainteresowanych link do paczki Alice _: [Link do repo i instrukcji alice bundle](https://github.com/nelmio/alice/blob/master/doc/getting-started.md#basic-usage)
 
+#  .......... **UWAGI** ...........
+
+1. Pamiętać, że aktualnie api zwraca po jednym resource na odpowiedz.\
+    Testy również są napisane pod jeden resource zwracany w odpowiedzi.\
+    Należy pamiętać, aby w razie zmiany liczby resourców zmienić również zawartość testów.\
+    Najlepiej będzie to zroibć poprzez wysłanie zapytania `POSTMAN-em` i skopiowanie odpowiedzi do testu.
+
 
 
 

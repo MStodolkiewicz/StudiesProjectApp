@@ -31,14 +31,14 @@ class SubCategory
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"subCategory:read","subCategory:write", "category:read"})
+     * @Groups({"subCategory:read","subCategory:write", "category:read","category:write"})
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="subCategories")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"subCategory:read"})
+     * @Groups({"subCategory:read","subCategory:write"})
      */
     private $category;
 
