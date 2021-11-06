@@ -2,11 +2,12 @@
 App\Entity\Intake:
   intake_{1..50}:
     amountInGrams: '<numberBetween(1,1000)>'
-    products: '<numberBetween(1, 10)>x @product_*'
+    product: '@product_*'
     user: '@user_*'
     mealType: '<word()>'
     createdAt: '<(new \DateTimeImmutable())>'
 
 
+#   products: '<numberBetween(1, 10)>x @product_*'
 
 

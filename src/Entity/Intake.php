@@ -37,12 +37,6 @@ class Intake
     private $amountInGrams;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Product::class, mappedBy="intakes")
-     * @Groups({"intake:read"})
-     */
-    private $products;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="intakes")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"intake:read","intake:write"})
@@ -60,9 +54,14 @@ class Intake
      */
     private $mealType;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="intakes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $product;
+
     public function __construct()
     {
-        $this->products = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
     }
 
@@ -79,33 +78,6 @@ class Intake
     public function setAmountInGrams(string $amountInGrams): self
     {
         $this->amountInGrams = $amountInGrams;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
-
-    public function addProduct(Product $product): self
-    {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->addIntake($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): self
-    {
-        if ($this->products->removeElement($product)) {
-            $product->removeIntake($this);
-        }
 
         return $this;
     }
@@ -150,6 +122,18 @@ class Intake
     public function setMealType(string $mealType): self
     {
         $this->mealType = $mealType;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
 
         return $this;
     }

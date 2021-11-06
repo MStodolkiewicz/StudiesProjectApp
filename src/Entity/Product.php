@@ -108,11 +108,6 @@ class Product
      */
     private $ingredients;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Intake::class, inversedBy="products")
-     * @Groups({"product:read"})
-     */
-    private $intakes;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="products")
@@ -126,12 +121,17 @@ class Product
      */
     private $createdAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Intake::class, mappedBy="product", orphanRemoval=true)
+     */
+    private $intakes;
+
     public function __construct()
     {
         $this->rates = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
-        $this->intakes = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
+        $this->intakes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -337,30 +337,6 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection|Intake[]
-     */
-    public function getIntakes(): Collection
-    {
-        return $this->intakes;
-    }
-
-    public function addIntake(Intake $intake): self
-    {
-        if (!$this->intakes->contains($intake)) {
-            $this->intakes[] = $intake;
-        }
-
-        return $this;
-    }
-
-    public function removeIntake(Intake $intake): self
-    {
-        $this->intakes->removeElement($intake);
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -389,6 +365,36 @@ class Product
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Intake[]
+     */
+    public function getIntakes(): Collection
+    {
+        return $this->intakes;
+    }
+
+    public function addIntake(Intake $intake): self
+    {
+        if (!$this->intakes->contains($intake)) {
+            $this->intakes[] = $intake;
+            $intake->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIntake(Intake $intake): self
+    {
+        if ($this->intakes->removeElement($intake)) {
+            // set the owning side to null (unless already changed)
+            if ($intake->getProduct() === $this) {
+                $intake->setProduct(null);
+            }
+        }
 
         return $this;
     }
