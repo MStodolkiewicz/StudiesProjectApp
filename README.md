@@ -39,12 +39,22 @@
     Należy pamiętać, aby w razie zmiany liczby resourców zmienić również zawartość testów.\
     Najlepiej będzie to zroibć poprzez wysłanie zapytania `POSTMAN-em` i skopiowanie odpowiedzi do testu.
 
-
+   
 Zrobione Encje : 
 Category, 
 SubCategory,
 Intake,
 Product -- do dokonczenia
+
+
+
+Security tutors:\
+[api_platform access_control](https://symfonycasts.com/screencast/api-platform-security/acl-cheese-owner) `{"security"="is_granted('ROLE_USER')"}` \
+[api platform onlu owner adding resource](https://symfonycasts.com/screencast/api-platform-security/acl-cheese-owner) `{"security"="is_granted('ROLE_USER') and object.getOwner() == user"}` \
+[roznica pomiedzy access_control i security](https://symfonycasts.com/screencast/api-platform-security/previous-object) \
+[jezeli logika security dla entity bedzie bardziej skomplikowana](https://symfonycasts.com/screencast/api-platform-security/access-control-voter#play)
+
+
 
 
 

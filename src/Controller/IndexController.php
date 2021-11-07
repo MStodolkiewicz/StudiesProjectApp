@@ -14,7 +14,7 @@ class IndexController extends AbstractController
      */
     public function index(ProductRepository $productRepository): Response
     {
-        dd($productRepository->getAverageRate(23));
+//        dd($productRepository->getAverageRate(23));
 
         return $this->render('index/index.html.twig', [
             'controller_name' => 'IndexController',
