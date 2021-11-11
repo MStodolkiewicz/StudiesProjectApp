@@ -14,8 +14,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=IntakeRepository::class)
  *  @ApiResource(
- *     normalizationContext={"groups"={"intake:read"}},
- *     denormalizationContext={"groups"={"intake:write"}},
+ *     itemOperations={
+ *          "get",
+ *          "put" = {
+ *              "security"="is_granted('EDIT',object)",
+ *          },
+ *          "delete" = {
+ *              "security"="is_granted('EDIT',object)",
+ *          },
+ *
+ *     },
+ *     collectionOperations={
+ *          "get",
+ *           "post"
+ *     },
  *     attributes={
  *          "pagination_items_per_page"=1
  *     }

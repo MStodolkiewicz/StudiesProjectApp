@@ -14,11 +14,28 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=SubCategoryRepository::class)
  * @ApiResource(
- *     normalizationContext={"groups"={"subCategory:read"}},
- *     denormalizationContext={"groups"={"subCategory:write"}},
+ *     itemOperations={
+ *          "get",
+ *          "put" = {
+ *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security_message"="You are not allowed to change this resource!"
+ *          },
+ *          "delete" = {
+ *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security_message"="You are not allowed to change this resource!"
+ *          },
+ *
+ *     },
+ *     collectionOperations={
+ *          "get",
+ *          "post"={
+ *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security_message"="You are not allowed to change this resource!"
+ *           }
+ *     },
  *     attributes={
  *          "pagination_items_per_page"=1
- *     }
+ *     },
  *     )
  */
 
@@ -28,13 +45,13 @@ class SubCategory
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"subCategory:read"})
+     * @Groups({"subcategory:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"subCategory:read","subCategory:write", "category:read","category:write"})
+     * @Groups({"subcategory:read","subcategory:write", "category:read","category:write"})
      * @Assert\NotBlank()
      * @Assert\NotNull()
      */
@@ -43,7 +60,7 @@ class SubCategory
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="subCategories")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"subCategory:read","subCategory:write"})
+     * @Groups({"subcategory:read","subcategory:write"})
      * @Assert\NotBlank()
      * @Assert\NotNull()
      */
@@ -99,7 +116,7 @@ class SubCategory
     }
 
     /**
-     * @Groups({"subCategory:read"})
+     * @Groups({"admin:read"})
      */
     public function getCreatedAtAgo(): string
     {

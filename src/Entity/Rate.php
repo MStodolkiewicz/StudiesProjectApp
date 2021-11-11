@@ -4,19 +4,33 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\RateRepository;
+use App\Validator\RateEdit;
 use Carbon\Carbon;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=RateRepository::class)
  * @ApiResource(
- *     normalizationContext={"groups"={"rate:read"}},
- *     denormalizationContext={"groups"={"rate:write"}},
+ *     itemOperations={
+ *          "get",
+ *          "put" = {
+ *              "security"="is_granted('EDIT',object)",
+ *          },
+ *
+ *     },
+ *     collectionOperations={
+ *          "get" = {
+ *              "security" = "is_granted('ROLE_USER')"
+ *     },
+ *          "post",
+ *     },
  *     attributes={
  *          "pagination_items_per_page"=1
  *     }
  *     )
+ * @RateEdit()
  */
 class Rate
 {
@@ -31,12 +45,17 @@ class Rate
     /**
      * @ORM\Column(type="integer")
      * @Groups({"rate:read","rate:write"})
+     * @Assert\NotNull
+     * @Assert\NotBlank
      */
     private $value;
 
     /**
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="rates")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"rate:read","rate:write"})
+     * @Assert\NotNull
+     * @Assert\NotBlank
      */
     private $product;
 
@@ -44,6 +63,8 @@ class Rate
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rates")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"rate:read","rate:write"})
+     * @Assert\NotNull
+     * @Assert\NotBlank
      */
     private $user;
 
@@ -52,7 +73,8 @@ class Rate
      */
     private $createdAt;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->createdAt = new \DateTimeImmutable();
     }
 
@@ -103,7 +125,7 @@ class Rate
     }
 
     /**
-     * @Groups({"rate:read"})
+     * @Groups({"admin:read"})
      */
     public function getCreatedAtAgo(): string
     {

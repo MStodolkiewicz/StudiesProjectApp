@@ -15,8 +15,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ApiResource(
- *     normalizationContext={"groups"={"user:read"}},
- *     denormalizationContext={"groups"={"user:write"}},
  *     attributes={
  *          "pagination_items_per_page"=1
  *     }
@@ -54,7 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false, unique=true)
-     * @Groups({"user:read","user:write"})
+     * @Groups({"user:read","user:write","intake:read"})
      */
     private $username;
 
@@ -139,7 +137,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**

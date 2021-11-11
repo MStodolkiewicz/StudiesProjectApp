@@ -26,5 +26,6 @@ App\Entity\Product:
     kcal: '<numberBetween(1, 700)>'
     user: '@user_*'
     category: '@category_*'
+    subCategory: '@sub_category_*'
     createdAt: '<(new \DateTimeImmutable())>'
 

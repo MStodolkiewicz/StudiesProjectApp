@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
+use App\Validator\ProductEdit;
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,13 +17,26 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  * @ApiResource(
- *  normalizationContext={"groups"={"product:read"}},
- *  denormalizationContext={"groups"={"product:write"}},
+ *     itemOperations={
+ *          "get",
+ *          "put" = {
+ *              "security"="is_granted('EDIT',object)",
+ *          },
+ *          "delete" = {
+ *              "security"="is_granted('EDIT',object)",
+ *          },
+ *
+ *     },
+ *     collectionOperations={
+ *          "get",
+ *          "post"
+ *     },
  *  attributes={
  *       "pagination_items_per_page"=1
  *  }
  * )
  * @ApiFilter(SearchFilter::class, properties={"barCodeNumbers": "exact"})
+ * @ProductEdit()
  */
 class Product
 {
@@ -60,12 +74,13 @@ class Product
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"product:read", "intake:read"})
+     * @Groups({"product:read", "intake:read","admin:write"})
      */
     private $isVerified = false;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"admin:read","admin:write"})
      */
     private $isDeleted = false;
 
@@ -371,26 +386,27 @@ class Product
     }
 
     /**
-     * @Groups({"product:read"})
+     * @Groups({"admin:read"})
      */
     public function getCreatedAtAgo(): string
     {
         return Carbon::instance($this->getCreatedAt())->diffForHumans();
     }
-    /**
-     * @Groups({"product:read", "intake:read"})
-     */
-    public function getAvarageRate(): float
-    {
 
-        $avarage = 0;
-        foreach ($this->rates as $rate){
-            $avarage += $rate->getValue();
-        }
-        $avarage /= sizeof($this->rates);
-
-        return $avarage;
-    }
+//    /**
+//     * @Groups({"product:read", "intake:read"})
+//     */
+//    public function getAvarageRate(): float
+//    {
+//
+//        $avarage = 0;
+//        foreach ($this->rates as $rate){
+//            $avarage += $rate->getValue();
+//        }
+//        $avarage /= sizeof($this->rates);
+//
+//        return $avarage;
+//    }
 
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {

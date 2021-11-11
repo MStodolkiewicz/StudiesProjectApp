@@ -36,7 +36,6 @@ class ProductRepository extends ServiceEntityRepository
     }
     */
 
-
     public function getAverageRate($id): ?float
     {
         return $this->createQueryBuilder('product')

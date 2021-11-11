@@ -41,10 +41,11 @@
 
    
 Zrobione Encje : 
-Category, 
-SubCategory,
-Intake,
-Product -- do dokonczenia
+Category, \
+SubCategory,\
+Intake,\
+Product -- do dokonczenia \
+..
 
 
 
@@ -55,7 +56,11 @@ Security tutors:\
 [jezeli logika security dla entity bedzie bardziej skomplikowana](https://symfonycasts.com/screencast/api-platform-security/access-control-voter#play)
 
 
+**Ważna część API, aby otrzymać poprawną dokumentację należy wysłać zapytanie pod:**
 
+`/api/docs?format=json` ,
+
+`/api/products?format=json` itd.
 
 
 

@@ -14,8 +14,22 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  * @ApiResource(
- *     normalizationContext={"groups"={"category:read"}},
- *     denormalizationContext={"groups"={"category:write"}},
+ *     itemOperations={
+ *          "get",
+ *          "put" = {
+ *              "security"="is_granted('ROLE_ADMIN')",
+ *          },
+ *          "delete" = {
+ *              "security"="is_granted('ROLE_ADMIN')",
+ *          },
+ *
+ *     },
+ *     collectionOperations={
+ *          "get",
+ *          "post"={
+ *              "security"="is_granted('ROLE_ADMIN')",
+ *           }
+ *     },
  *     attributes={
  *          "pagination_items_per_page"=1
  *     }
@@ -34,7 +48,7 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"category:read", "category:write", "subCategory:read", "intake:read", "product:read"})
+     * @Groups({"category:read", "category:write", "subcategory:read", "intake:read", "product:read"})
      * @Assert\NotBlank()
      * @Assert\NotNull()
      */
@@ -146,7 +160,7 @@ class Category
         return $this->createdAt;
     }
     /**
-     * @Groups({"category:read"})
+     * @Groups({"admin:read"})
      */
     public function getCreatedAtAgo(): string
     {
