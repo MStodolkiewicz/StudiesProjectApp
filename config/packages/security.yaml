@@ -16,7 +16,6 @@ security:
         property: email
   firewalls:
     login:
-      context: my_context
       pattern: ^/api/login
       stateless: true
       json_login:
@@ -24,25 +23,21 @@ security:
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
     api:
-      context: my_context
       pattern: ^/api
       stateless: true
-      jwt:
-        authenticator: app.custom_authenticator
+      jwt: ~
+#        authenticator: app.custom_authenticator
 #      request_matcher: app.json_header_request_matcher
-
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
     main:
-      context: my_context
       lazy: true
       provider: app_user_provider
       custom_authenticator: App\Security\UserLoginAuthenticator
       logout:
         path: app_logout
-        # where to redirect after logout
-        # target: app_any_route
+
 
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#firewalls-authentication

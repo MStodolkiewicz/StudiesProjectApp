@@ -13,7 +13,6 @@ class AutoGroupResourceMetadataFactory implements ResourceMetadataFactoryInterfa
 
     public function __construct(ResourceMetadataFactoryInterface $decorated)
     {
-
         $this->decorated = $decorated;
     }
 
