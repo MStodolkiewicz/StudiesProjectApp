@@ -68,5 +68,9 @@ TO DO:
 obecnie trwają prace nad ustawieniem firewall-a tak zeby przepuszczal zapytania /api do `main-a` jezeli uzytkownik korzysta z przegladarki.
 Jezeli header requestu będzie brzmiał `application/json` należy założyć, że nie jest to przeglądarka i skierować użytkownika na entry point `api`
 
+Jak narazie wywala błąd w serwisie ImpersonateUrlGenerator.php (albo obejść deokracją albo wpisać informacje o headerze na sztywno w FirewallMap.php)
+
+
+
 
 

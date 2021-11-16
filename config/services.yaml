@@ -33,17 +33,19 @@ services:
         arguments: [ '@App\ApiPlatform\AutoGroupResourceMetadataFactory.inner' ]
         decoration_priority: -20
 
-    'App\Security\CustomApiHandlingFirewallMap':
-        decorates: 'security.firewall.map'
-        arguments: [ '@App\Security\CustomApiHandlingFirewallMap.inner' ]
+    app.custom_authenticator:
+        class: App\Security\CustomJwtAuthenticator
+        parent: lexik_jwt_authentication.security.jwt_authenticator
 
-#    app.custom_authenticator:
-#        class: App\Security\CustomJwtAuthenticator
-#        parent: lexik_jwt_authentication.security.jwt_authenticator
+    app.json_header_request_matcher:
+        class: App\Security\JsonHeaderRequestMatcher
 
-#    app.json_header_request_matcher:
-#        class: App\Security\JsonHeaderRequestMatcher
-#        arguments: [ '@Symfony\Component\HttpFoundation\Request' ]
+
+
+
+
+
+
 
 
 

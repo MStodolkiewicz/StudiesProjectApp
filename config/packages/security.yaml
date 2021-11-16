@@ -18,6 +18,7 @@ security:
     login:
       pattern: ^/api/login
       stateless: true
+      methods: [POST]
       json_login:
         check_path: /api/login
         success_handler: lexik_jwt_authentication.handler.authentication_success
@@ -25,9 +26,9 @@ security:
     api:
       pattern: ^/api
       stateless: true
-      jwt: ~
-#        authenticator: app.custom_authenticator
-#      request_matcher: app.json_header_request_matcher
+      jwt:
+        authenticator: app.custom_authenticator
+      request_matcher: app.json_header_request_matcher
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
