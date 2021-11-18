@@ -138,6 +138,7 @@ class Product
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"admin:read","admin:write"})
      */
     private $user;
 

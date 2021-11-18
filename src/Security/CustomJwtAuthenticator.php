@@ -33,7 +33,6 @@ class CustomJwtAuthenticator extends JWTAuthenticator implements AuthenticationE
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-
         return null;
     }
 

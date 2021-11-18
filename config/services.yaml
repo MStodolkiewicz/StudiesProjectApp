@@ -38,8 +38,8 @@ services:
 #        class: App\Security\CustomJwtAuthenticator
 #        parent: lexik_jwt_authentication.security.jwt_authenticator
 #
-#    app.json_header_request_matcher:
-#        class: App\Security\JsonHeaderRequestMatcher
+    app.json_header_request_matcher:
+        class: App\Security\JsonHeaderRequestMatcher
 
     'ApiPlatform\Core\Bridge\Symfony\Bundle\SwaggerUi\SwaggerUiContext': '@api_platform.swagger_ui.context'
 

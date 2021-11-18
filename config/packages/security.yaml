@@ -28,7 +28,7 @@ security:
       jwt: ~
 #      lines below aren't needed anymore as custom controller DocumentationController makes it possible to view documentation in browser without any problem
 #        authenticator: app.custom_authenticator
-#      request_matcher: app.json_header_request_matcher
+      request_matcher: app.json_header_request_matcher
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
