@@ -19,21 +19,19 @@ use Doctrine\ORM\Mapping as ORM;
  *              "security"="is_granted('EDIT',object)",
  *          },
  *          "delete" = {
- *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security"="is_granted('DELETE',object)",
  *          },
  *
  *     },
  *     collectionOperations={
- *          "get" = {
- *              "security" = "is_granted('ROLE_USER')"
- *     },
+ *          "get",
  *          "post",
  *     },
  *     attributes={
  *          "pagination_items_per_page"=5
  *     }
  *     )
- * @RateEdit()
+ * @RateEdit
  */
 class Rate
 {
@@ -50,6 +48,7 @@ class Rate
      * @Groups({"rate:read","rate:write"})
      * @Assert\NotNull
      * @Assert\NotBlank
+     * @Assert\Range(min="1",max="5")
      */
     private $value;
 

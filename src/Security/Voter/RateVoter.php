@@ -21,12 +21,13 @@ class RateVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['EDIT'])
+        return in_array($attribute, ['EDIT','DELETE'])
             && $subject instanceof Rate;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
+
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {
@@ -38,6 +39,8 @@ class RateVoter extends Voter
             case 'EDIT':
                 if($this->security->isGranted("ROLE_ADMIN")) return true;
                 if($user == $subject->getUser()) return true;
+            case 'DELETE':
+                if($this->security->isGranted("ROLE_ADMIN")) return true;
         }
 
         return false;

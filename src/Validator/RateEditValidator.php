@@ -24,43 +24,42 @@ class RateEditValidator extends ConstraintValidator
     }
 
     /**
-     * @param Rate $value
+     * @param Rate $rate
      * @param Constraint $constraint
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($rate, Constraint $constraint)
     {
+
         /* @var $constraint RateEdit */
 
         $currentUser = $this->security->getUser();
-        $originalRate = $this->entityManager->getUnitOfWork()->getOriginalEntityData($value);
+        $originalRate = $this->entityManager->getUnitOfWork()->getOriginalEntityData($rate);
+
 
         if($this->security->isGranted("ROLE_ADMIN")) return;
-        // dodaj logike ktora sprawi ze uzytkownik nie bedzie mogl tworzyc nowej oceny danemu przedmiotowi
-        // jezeli juz wczesniej ocenil dany produkt
-        // w wyzej wymienionym przypadku uzytkownik powinien edytowac, a nie tworzyc ocene.
-        // naprawdopodobniej trzeba bedzie uzyc rateReposiotry ew. productRepository ?
-
-//        if($value->getUser() !== $currentUser){
-//            $this->context->buildViolation('Rates can be given only by and as currently logged user')
-//                ->addViolation();
-//        }
-        if(!$value->getProduct() || !$value->getValue()){
-            //skipping any validation throws here because of @Assert/NotNull and @Assert/NotBlank in Rate Entity Class file.
-
-        }else{
             if(!$originalRate){
-                $isRateAlreadyCreated = true == $this->rateRepository->findOneBy(['product' => $value->getProduct()->getId(),'user' => $currentUser->getId()]);
+                $isRateAlreadyCreated = true == $this->rateRepository->findOneBy(['product' => $rate->getProduct()->getId(),'user' => $currentUser->getId()]);
                 if($isRateAlreadyCreated){
                     $this->context->buildViolation('You cannot add new rate for this product! Please edit existing one.')
                         ->addViolation();
                 }
+            }else{
+                if($rate->getProduct()->getId() != $originalRate['product_id']){
+                    $this->context->buildViolation('Cannot change product !')
+                        ->addViolation();
+                }
+                if ($rate->getUser() !== $currentUser) {
+                    $this->context->buildViolation('Rates can be given only by and as currently logged user')
+                        ->addViolation();
+                }
             }
-        }
+
+
 
 
 //        foreach (array_keys($originalRate) as $key) {
 //            $methodName = 'get' . ucfirst($key);
-//            if (method_exists($value, $methodName) && $originalRate[$key] != $value->{$methodName}()){
+//            if (method_exists($rate, $methodName) && $originalRate[$key] != $rate->{$methodName}()){
 //
 //            }
 //        }

@@ -404,6 +404,7 @@ class Product
 //        foreach ($this->rates as $rate){
 //            $avarage += $rate->getValue();
 //        }
+//
 //        $avarage /= sizeof($this->rates);
 //
 //        return $avarage;

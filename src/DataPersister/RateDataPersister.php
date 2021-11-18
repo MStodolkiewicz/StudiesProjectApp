@@ -34,6 +34,7 @@ class RateDataPersister implements \ApiPlatform\Core\DataPersister\DataPersister
 
         /** @var Rate $data */
         $data->setUser($this->security->getUser());
+
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }
