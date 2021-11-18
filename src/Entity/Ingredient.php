@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=IngredientRepository::class)
  * @ApiResource(
  *     attributes={
- *          "pagination_items_per_page"=1
+ *          "pagination_items_per_page"=5
  *     }
  *     )
  */

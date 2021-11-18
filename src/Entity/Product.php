@@ -32,7 +32,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          "post"
  *     },
  *  attributes={
- *       "pagination_items_per_page"=1
+ *       "pagination_items_per_page"=5
  *  }
  * )
  * @ApiFilter(SearchFilter::class, properties={"barCodeNumbers": "exact"})

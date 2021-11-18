@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *           "post"
  *     },
  *     attributes={
- *          "pagination_items_per_page"=1
+ *          "pagination_items_per_page"=5
  *     }
  *     )
  */

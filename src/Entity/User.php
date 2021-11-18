@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ApiResource(
  *     attributes={
- *          "pagination_items_per_page"=1
+ *          "pagination_items_per_page"=5
  *     }
  *     )
  *
