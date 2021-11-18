@@ -18,6 +18,9 @@ use Doctrine\ORM\Mapping as ORM;
  *          "put" = {
  *              "security"="is_granted('EDIT',object)",
  *          },
+ *          "delete" = {
+ *              "security"="is_granted('ROLE_ADMIN')",
+ *          },
  *
  *     },
  *     collectionOperations={
@@ -62,9 +65,7 @@ class Rate
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rates")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"rate:read","rate:write"})
-     * @Assert\NotNull
-     * @Assert\NotBlank
+     * @Groups({"rate:read"})
      */
     private $user;
 

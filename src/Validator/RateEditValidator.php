@@ -31,6 +31,7 @@ class RateEditValidator extends ConstraintValidator
     {
         /* @var $constraint RateEdit */
 
+        $currentUser = $this->security->getUser();
         $originalRate = $this->entityManager->getUnitOfWork()->getOriginalEntityData($value);
 
         if($this->security->isGranted("ROLE_ADMIN")) return;
@@ -38,18 +39,24 @@ class RateEditValidator extends ConstraintValidator
         // jezeli juz wczesniej ocenil dany produkt
         // w wyzej wymienionym przypadku uzytkownik powinien edytowac, a nie tworzyc ocene.
         // naprawdopodobniej trzeba bedzie uzyc rateReposiotry ew. productRepository ?
-        if($value->getProduct() && !$originalRate){
 
-//        $product = $this->rateRepository->findBy(['user_id' => $this->security->getUser()->getId(),'product_id' => $value->getProduct()->getId()]);
+//        if($value->getUser() !== $currentUser){
+//            $this->context->buildViolation('Rates can be given only by and as currently logged user')
+//                ->addViolation();
+//        }
+        if(!$value->getProduct() || !$value->getValue()){
+            //skipping any validation throws here because of @Assert/NotNull and @Assert/NotBlank in Rate Entity Class file.
 
+        }else{
+            if(!$originalRate){
+                $isRateAlreadyCreated = true == $this->rateRepository->findOneBy(['product' => $value->getProduct()->getId(),'user' => $currentUser->getId()]);
+                if($isRateAlreadyCreated){
+                    $this->context->buildViolation('You cannot add new rate for this product! Please edit existing one.')
+                        ->addViolation();
+                }
+            }
         }
 
-
-
-//        dd($value->getProduct());
-
-//        if(!$originalRate) return;
-//        dd($originalRate);
 
 //        foreach (array_keys($originalRate) as $key) {
 //            $methodName = 'get' . ucfirst($key);

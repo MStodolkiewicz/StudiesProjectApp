@@ -3,8 +3,17 @@ App\Entity\User:
   user_51:
     email: 'admin@admin.pl'
     roles: [ 'ROLE_USER','ROLE_ADMIN' ]
-    password: \$2y\$13\$NSfO217x22kFR1.LfjeSVe4D5xmtuI1U5ppEjU0MPNScYtGcDviY.
+    password: \$2y\$13\$uNwCY753w.UfRMgLaGqjsuJGnq5PdagYn2TpG3yNgG/v0iBPc6kQy
     username: 'admin'
+    height: '<numberBetween(1, 280)>'
+    weight: '<numberBetween(1, 280)>'
+    birthDate: <((new \DateTimeImmutable())->sub(new DateInterval('P1Y')))>
+    createdAt: '<(new \DateTimeImmutable())>'
+  user_52:
+    email: 'user@user.pl'
+    roles: [ 'ROLE_USER' ]
+    password: \$2y\$13\$ZIKRdkD2PyPbEvoHZwc2cu6ucyQ1DcstOEp7Rffj/hSb1JRk7ERci
+    username: 'user'
     height: '<numberBetween(1, 280)>'
     weight: '<numberBetween(1, 280)>'
     birthDate: <((new \DateTimeImmutable())->sub(new DateInterval('P1Y')))>

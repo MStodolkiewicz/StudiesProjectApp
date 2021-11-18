@@ -33,20 +33,8 @@ class CustomJwtAuthenticator extends JWTAuthenticator implements AuthenticationE
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        //Workaround for not working entrypoint publication on /api endpoint
-        return new Response(json_encode((object)[
-            "@context" => "/api/contexts/Entrypoint",
-            "@id" => "/api",
-            "@type" => "Entrypoint",
-            "category" => "/api/categories",
-            "ingredient" => "/api/ingredients",
-            "intake" => "/api/intakes",
-            "product" => "/api/products",
-            "rate" => "/api/rates",
-            "subCategory" => "/api/sub_categories",
-            "user" => "/api/users"
-        ]));
-//        return null;
+
+        return null;
     }
 
 
