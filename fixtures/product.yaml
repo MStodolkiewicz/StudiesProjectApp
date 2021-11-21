@@ -18,7 +18,7 @@ App\Entity\Product:
     barCodeNumbers: '<numberBetween(1111111, 9999999)>'
     name: '<sentence(2)>'
     brand: '<sentence(3)>'
-    isVerified: 0
+    isVerified: '<numberBetween(0, 1)>'
     isDeleted: 0
     proteins: '<numberBetween(1, 200)>'
     carbohydrates: '<numberBetween(1, 200)>'

@@ -21,7 +21,6 @@ use Doctrine\ORM\Mapping as ORM;
  *          "delete" = {
  *              "security"="is_granted('DELETE',object)",
  *          },
- *
  *     },
  *     collectionOperations={
  *          "get",

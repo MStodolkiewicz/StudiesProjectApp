@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *          "delete" = {
  *              "security"="is_granted('ROLE_ADMIN')",
- *              "security_message"="You are not allowed to change this resource!"
+ *              "security_message"="You are not allowed to delete this resource!"
  *          },
  *
  *     },
@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "get",
  *          "post"={
  *              "security"="is_granted('ROLE_ADMIN')",
- *              "security_message"="You are not allowed to change this resource!"
+ *              "security_message"="You are not allowed to add this resource!"
  *           }
  *     },
  *     attributes={

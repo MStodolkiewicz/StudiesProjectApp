@@ -24,31 +24,39 @@ class RateEditValidator extends ConstraintValidator
     }
 
     /**
-     * @param Rate $rate
+     * @param Rate $value
      * @param Constraint $constraint
      */
-    public function validate($rate, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
 
         /* @var $constraint RateEdit */
 
+        if (!$value instanceof Rate) {
+            throw new \LogicException(sprintf("Object passed to this validator must be of type %s", Rate::class));
+        }
+
         $currentUser = $this->security->getUser();
-        $originalRate = $this->entityManager->getUnitOfWork()->getOriginalEntityData($rate);
+        $originalRate = $this->entityManager->getUnitOfWork()->getOriginalEntityData($value);
+
+
 
 
         if($this->security->isGranted("ROLE_ADMIN")) return;
+            //New Rate being created
             if(!$originalRate){
-                $isRateAlreadyCreated = true == $this->rateRepository->findOneBy(['product' => $rate->getProduct()->getId(),'user' => $currentUser->getId()]);
+                $isRateAlreadyCreated = true == $this->rateRepository->findOneBy(['product' => $value->getProduct()->getId(),'user' => $currentUser->getId()]);
                 if($isRateAlreadyCreated){
                     $this->context->buildViolation('You cannot add new rate for this product! Please edit existing one.')
                         ->addViolation();
                 }
+            //Rate being edited
             }else{
-                if($rate->getProduct()->getId() != $originalRate['product_id']){
+                if($value->getProduct()->getId() != $originalRate['product_id']){
                     $this->context->buildViolation('Cannot change product !')
                         ->addViolation();
                 }
-                if ($rate->getUser() !== $currentUser) {
+                if ($value->getUser() !== $currentUser) {
                     $this->context->buildViolation('Rates can be given only by and as currently logged user')
                         ->addViolation();
                 }

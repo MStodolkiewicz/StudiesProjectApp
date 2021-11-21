@@ -24,6 +24,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          },
  *          "delete" = {
  *              "security"="is_granted('EDIT',object)",
+ *              "security_message"="You don't have permission to delete this product."
  *          },
  *
  *     },
@@ -458,4 +459,4 @@ class Product
 
         return $this;
     }
-}
+ }

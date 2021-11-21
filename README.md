@@ -64,11 +64,25 @@ Security tutors:\
 
 TO DO: 
 
-`security.yml`: 
-obecnie trwają prace nad ustawieniem firewall-a tak zeby przepuszczal zapytania /api do `main-a` jezeli uzytkownik korzysta z przegladarki.
-Jezeli header requestu będzie brzmiał `application/json` należy założyć, że nie jest to przeglądarka i skierować użytkownika na entry point `api`
+* **Opracować opcję rejestrowania użytkowników. Przydatna może być paczka `FosRestBundle`. Nie mniej jednak istnieje opcja, stworzenia ww. mechanizmu w oparciu o obecne paczki i poniższe kroki:** 
 
-Jak narazie wywala błąd w serwisie ImpersonateUrlGenerator.php (albo obejść deokracją albo wpisać informacje o headerze na sztywno w FirewallMap.php)
+ **-- Stworzyć dodatkowe entity 'Register' ( dodać adnotację `@ApiResource()` )**
+
+ **-- Usunąć wszelkie operacje poza POST**
+
+ **-- Następnie bazując na `DataPersister-ach` ( i być może na `DataProvider-ach` ) dodać użytkownika do bazy.**
+
+ **-- Po dodaniu go do bazy najlepiej byłoby zwrócić (być może przy użyciu `DataProvider-a`) jwt token (programowa generacja kodu dla danego użytkownika)**
+
+
+* `security.yml`: 
+~~obecnie trwają prace nad ustawieniem firewall-a tak zeby przepuszczal zapytania /api do~~ `main-a` ~~jezeli uzytkownik korzysta z przegladarki.
+Jezeli header requestu będzie brzmiał~~ `application/json` ~~należy założyć, że nie jest to przeglądarka i skierować użytkownika na entry point~~ `api`
+
+
+* ~~Jak narazie wywala błąd w serwisie ImpersonateUrlGenerator.php (albo obejść deokracją albo wpisać informacje o headerze na sztywno w FirewallMap.php)~~
+
+
 
 
 

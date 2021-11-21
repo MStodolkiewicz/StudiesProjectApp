@@ -25,6 +25,9 @@ class ProductVoter extends Voter
             && $subject instanceof Product;
     }
 
+    /**
+     * @param Product $subject
+     */
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
@@ -37,7 +40,7 @@ class ProductVoter extends Voter
         switch ($attribute) {
             case 'EDIT':
                 if($this->security->isGranted("ROLE_ADMIN")) return true;
-                if($subject->getUser() == $user) return true;
+                if(!$subject->getIsVerified() && !$subject->getIsDeleted() && $subject->getUser() === $user) return true;
         }
 
         return false;
