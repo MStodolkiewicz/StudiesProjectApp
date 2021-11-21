@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\IntakeRepository;
+use App\Validator\IntakeEdit;
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -32,6 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "pagination_items_per_page"=5
  *     }
  *     )
+ * @IntakeEdit
  */
 class Intake
 {

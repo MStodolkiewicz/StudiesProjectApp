@@ -2,14 +2,13 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Intake;
+use App\Entity\Ingredient;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
-use function PHPUnit\Framework\throwException;
 
-class IntakeVoter extends Voter
+class IngredientVoter extends Voter
 {
     private $security;
 
@@ -22,8 +21,8 @@ class IntakeVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['EDIT'])
-            && $subject instanceof Intake;
+        return in_array($attribute, ['EDIT', 'DELETE'])
+            && $subject instanceof Ingredient;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -38,9 +37,13 @@ class IntakeVoter extends Voter
         switch ($attribute) {
             case 'EDIT':
                 if($this->security->isGranted("ROLE_ADMIN")) return true;
-                if($subject->getUser() == $user)  return true;
+                if($user == $subject->getUser()) return true;
+                break;
+            case 'DELETE':
+                if($this->security->isGranted("ROLE_ADMIN")) return true;
                 break;
         }
+
         return false;
     }
 }

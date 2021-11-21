@@ -18,9 +18,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "get",
  *          "put" = {
  *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security_message"="You are not allowed to change this resource!"
  *          },
  *          "delete" = {
  *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security_message"="You are not allowed to delete this resource!"
  *          },
  *
  *     },
@@ -28,13 +30,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "get",
  *          "post"={
  *              "security"="is_granted('ROLE_ADMIN')",
+ *              "security_message"="You are not allowed to add this resource!"
  *           }
  *     },
  *     attributes={
  *          "pagination_items_per_page"=5
  *     }
  *     )
- *
  */
 class Category
 {

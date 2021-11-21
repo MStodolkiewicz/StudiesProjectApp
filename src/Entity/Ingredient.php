@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\IngredientRepository;
+use App\Validator\IngredientEdit;
 use Carbon\Carbon;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,11 +12,25 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  *
  * @ORM\Entity(repositoryClass=IngredientRepository::class)
- * @ApiResource(
+ * @ApiResource=(
+ *     itemOperations={
+ *          "get",
+ *          "put" = {
+ *              "security"="is_granted('EDIT',object)",
+ *          },
+ *          "delete" = {
+ *              "security"="is_granted('DELETE',object)",
+ *          },
+ *     },
+ *     collectionOperations={
+ *          "get",
+ *          "post",
+ *     },
  *     attributes={
  *          "pagination_items_per_page"=5
  *     }
  *     )
+ *@IngredientEdit
  */
 class Ingredient
 {
@@ -36,7 +51,7 @@ class Ingredient
     /**
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="ingredients")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"ingredient:read"})
+     * @Groups({"ingredient:read", "ingredient:write"})
      */
     private $product;
 
