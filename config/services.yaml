@@ -42,6 +42,7 @@ services:
         class: App\Security\JsonHeaderRequestMatcher
 
     'ApiPlatform\Core\Bridge\Symfony\Bundle\SwaggerUi\SwaggerUiContext': '@api_platform.swagger_ui.context'
+    Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
 
 
 
