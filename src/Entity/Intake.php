@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\IntakeRepository;
 use App\Validator\IntakeEdit;
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -41,9 +44,16 @@ class Intake
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"intake:read"})
+     * @ApiProperty(identifier=false)
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="uuid",unique=true)
+     * @ApiProperty(identifier=true)
+     */
+    private $uuid;
+
 
     /**
      * @ORM\Column(type="decimal", precision=7, scale=2)
@@ -85,11 +95,20 @@ class Intake
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->uuid = Uuid::uuid4();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return UuidInterface
+     */
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function getAmountInGrams(): ?string

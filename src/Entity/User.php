@@ -2,34 +2,155 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use App\Controller\User\ActivateAccountController;
+use App\Controller\User\RegisterController;
+use App\Dto\Request\User\ActivateAccountRequest;
+use App\Dto\Request\User\RegisterUserRequest;
 use App\Repository\UserRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ApiResource(
+ *     itemOperations={
+ *          "get"={
+ *              "security" = "object == user or is_granted('ROLE_ADMIN')"
+ *          },
+ *          "put"= {
+ *              "security" = "object == user or is_granted('ROLE_ADMIN')",
+ *          },
+ *          "delete" = {
+ *              "security" = "is_granted('ROLE_ADMIN')"
+ *          },
+ *     },
+ *     collectionOperations={
+ *          "get" = {
+ *              "security" = "is_granted('ROLE_ADMIN')"
+ *          },
+ *          "post" = {
+ *              "security" = "is_granted('ROLE_ADMIN')"
+ *          },
+ *          "register" = {
+ *              "method" = "POST",
+ *              "status" = 204,
+ *              "path" = "/users/register",
+ *              "controller" = RegisterController::class,
+ *              "defaults" = {
+ *                  "dto" = RegisterUserRequest::class,
+ *               },
+ *              "openapi_context" = {
+ *                  "summary" = "Registers a new user",
+ *                  "description" = "Registers a new user",
+ *                  "requestBody" = {
+ *                      "content" = {
+ *                          "application/json" = {
+ *                              "schema" = {
+ *                                  "type" = "object",
+ *                                  "properties" = {
+ *                                      "username" = {
+ *                                          "type" = "string",
+ *                                          "example" = "John",
+ *                                      },
+ *                                      "email" = {
+ *                                          "type" = "string",
+ *                                          "example" = "johndoe@example.com",
+ *                                      },
+ *                                      "password" = {
+ *                                          "type" = "string",
+ *                                          "example" = "johnStrongPass123",
+ *                                      },
+ *                                  },
+ *                              },
+ *                          },
+ *                      }
+ *                },
+ *                "responses" = {
+ *                    204 = {
+ *                        "description" = "The user is registered",
+ *                    }
+ *                }
+ *            },
+ *              "validate" = false,
+ *              "read" = false,
+ *              "deserialize" = false,
+ *          },
+ *        "activate" = {
+ *            "method" = "POST",
+ *            "status" = 204,
+ *            "path" = "/users/activate",
+ *            "controller" = ActivateAccountController::class,
+ *            "defaults" = {
+ *                "dto" = ActivateAccountRequest::class,
+ *            },
+ *            "openapi_context" = {
+ *                "summary" = "Activates a user account",
+ *                "description" = "Activates a user account",
+ *                "requestBody" = {
+ *                    "content" = {
+ *                        "application/json" = {
+ *                            "schema" = {
+ *                                "type" = "object",
+ *                                "properties" = {
+ *                                    "token" = {
+ *                                        "type" = "string",
+ *                                        "example" = "TOKENSTRING",
+ *                                    },
+ *                                },
+ *                            },
+ *                        },
+ *                    }
+ *                },
+ *                "responses" = {
+ *                    204 = {
+ *                        "description" = "The user is activated",
+ *                    }
+ *                }
+ *            },
+ *            "read" = false,
+ *            "validate" = false,
+ *            "deserialize" = false,
+ *        },
+ *     },
  *     attributes={
  *          "pagination_items_per_page"=5
  *     }
- *     )
+ * )
  *
+ *
+ * @UniqueEntity(fields={"email", "username"}, message="There is already an account with this email or username")
  */
+
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user:read"})
+     * @ApiProperty(identifier=false)
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="uuid",unique=true)
+     * @ApiProperty(identifier=true)
+     */
+    private $uuid;
 
     /**
      * @ORM\Column(type="string", length=180, nullable=false, unique=true)
@@ -76,19 +197,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="user")
-     * @Groups({"user:read"})
      */
     private $products;
 
     /**
      * @ORM\OneToMany(targetEntity=Intake::class, mappedBy="user", orphanRemoval=true)
-     * @Groups({"user:read","user:write"})
      */
+
     private $intakes;
 
     /**
      * @ORM\OneToMany(targetEntity=Rate::class, mappedBy="user", orphanRemoval=true)
-     * @Groups({"user:read"})
      */
     private $rates;
 
@@ -97,17 +216,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $createdAt;
 
+
+    /**
+    * @ORM\Column(type="datetime", length=180, nullable=true)
+    * @Groups({"admin:read","admin:write"})
+    */
+    protected $deletedAt;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"admin:read","admin:write"})
+     */
+    private $isVerified = false;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
         $this->intakes = new ArrayCollection();
         $this->rates = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
+        $this->uuid = Uuid::uuid4();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return UuidInterface
+     */
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function getEmail(): ?string
@@ -346,4 +487,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
+    /**
+     * @return bool
+     */
+    public function isDeleted(): bool
+    {
+        return null !== $this->deletedAt;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
 }

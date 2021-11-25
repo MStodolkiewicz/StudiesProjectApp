@@ -40,15 +40,6 @@
     Najlepiej będzie to zroibć poprzez wysłanie zapytania `POSTMAN-em` i skopiowanie odpowiedzi do testu.
 
    
-Zrobione Encje : 
-Category, \
-SubCategory,\
-Intake,\
-Product -- do dokonczenia \
-..
-
-
-
 Security tutors:\
 [api_platform access_control](https://symfonycasts.com/screencast/api-platform-security/acl-cheese-owner) `{"security"="is_granted('ROLE_USER')"}` \
 [api platform onlu owner adding resource](https://symfonycasts.com/screencast/api-platform-security/acl-cheese-owner) `{"security"="is_granted('ROLE_USER') and object.getOwner() == user"}` \
@@ -62,18 +53,15 @@ Security tutors:\
 
 `/api/products?format=json` itd.
 
-TO DO: 
+TO DO:
 
-* **Opracować opcję rejestrowania użytkowników. Przydatna może być paczka `FosRestBundle`. Nie mniej jednak istnieje opcja, stworzenia ww. mechanizmu w oparciu o obecne paczki i poniższe kroki:** 
+* Implementacja LogServive, EmailService, SettingService
 
- **-- Stworzyć dodatkowe entity 'Register' ( dodać adnotację `@ApiResource()` )**
 
- **-- Usunąć wszelkie operacje poza POST**
+* Wysyłanie maila weryfikującego użytkownika
 
- **-- Następnie bazując na `DataPersister-ach` ( i być może na `DataProvider-ach` ) dodać użytkownika do bazy.**
 
- **-- Po dodaniu go do bazy najlepiej byłoby zwrócić (być może przy użyciu `DataProvider-a`) jwt token (programowa generacja kodu dla danego użytkownika)**
-
+* ~~Rejestracja~~
 
 * `security.yml`: 
 ~~obecnie trwają prace nad ustawieniem firewall-a tak zeby przepuszczal zapytania /api do~~ `main-a` ~~jezeli uzytkownik korzysta z przegladarki.

@@ -1,0 +1,4 @@
+framework:
+    mailer:
+        envelope:
+            recipients: ['mailer.for.symfony@gmail.com']

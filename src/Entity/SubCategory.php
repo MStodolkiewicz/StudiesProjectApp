@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\SubCategoryRepository;
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -45,9 +48,15 @@ class SubCategory
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"subcategory:read"})
+     * @ApiProperty(identifier=false)
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="uuid",unique=true)
+     * @ApiProperty(identifier=true)
+     */
+    private $uuid;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -79,11 +88,20 @@ class SubCategory
     public function __construct(){
         $this->createdAt = new \DateTimeImmutable();
         $this->products = new ArrayCollection();
+        $this->uuid = Uuid::uuid4();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return UuidInterface
+     */
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function getName(): ?string

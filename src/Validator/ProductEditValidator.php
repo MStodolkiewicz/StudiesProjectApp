@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Entity\KcalPerOneGramOf;
+use App\Constant\KcalPerOneGramOf;
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;

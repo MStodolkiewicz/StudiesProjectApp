@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
 use App\Validator\ProductEdit;
@@ -10,6 +11,8 @@ use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -41,15 +44,19 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  */
 class Product
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"product:read"})
-     *
+     * @ApiProperty(identifier=false)
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="uuid",unique=true)
+     * @ApiProperty(identifier=true)
+     */
+    private $uuid;
 
     /**
      * @ORM\Column(type="string", length=13)
@@ -80,10 +87,10 @@ class Product
     private $isVerified = false;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="datetime", length=180, nullable=true)
      * @Groups({"admin:read","admin:write"})
      */
-    private $isDeleted = false;
+    protected $deletedAt;
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
@@ -139,7 +146,7 @@ class Product
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"admin:read","admin:write"})
+     * @Groups({"admin:write"})
      */
     private $user;
 
@@ -165,11 +172,20 @@ class Product
         $this->ingredients = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->intakes = new ArrayCollection();
+        $this->uuid = Uuid::uuid4();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return UuidInterface
+     */
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function getBarCodeNumbers(): ?string
@@ -224,6 +240,14 @@ class Product
         $this->size = $size;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeleted(): bool
+    {
+        return null !== $this->deletedAt;
     }
 
     public function getIsVerified(): ?bool
