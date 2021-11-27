@@ -171,9 +171,6 @@ class Product
      */
     private $avarageRate;
 
-    /**
-     * @Groups({"product:read", "intake:read"})
-     */
     private $yourRate;
 
     public function __construct()
