@@ -47,4 +47,14 @@ class RateRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getUsersRateForProduct($users_id, $product_id){
+        return $this->createQueryBuilder('rate')
+            ->where('rate.product = :product_id')
+            ->andWhere('rate.user = :users_id')
+            ->setParameter('product_id', $product_id)
+            ->setParameter('users_id', $users_id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

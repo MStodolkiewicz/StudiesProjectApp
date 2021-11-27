@@ -19,7 +19,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=IntakeRepository::class)
  *  @ApiResource(
  *     itemOperations={
- *          "get",
+ *          "get" = {
+ *              "security"="is_granted('EDIT', object)",
+ *          },
  *          "put" = {
  *              "security"="is_granted('EDIT',object)",
  *          },

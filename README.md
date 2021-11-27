@@ -55,10 +55,32 @@ Security tutors:\
 
 TO DO:
 
-* Implementacja LogServive, EmailService, SettingService
+* dodac do produktu wyswietlajace dane w polu w formacie json-ld
+
+**ex:**
+
+  
+    'yourRate': {
+                  '@id': /api/rate/123123-3dsa-333,
+                  '@context': 'Rate',
+                  'value': 4 
+                }
+
+* mapowanie kodów błędów (w tym momencie dla blednej walidacji rzuca 500) na wybrane przez nas
 
 
-* Wysyłanie maila weryfikującego użytkownika
+* provider-y 
+
+
+* testy
+
+
+* ingredient do śmieci, dorzucic pole do produktu ingredient (sam tekst)
+
+* ~~Implementacja LogServive, EmailService, SettingService~~
+
+
+* ~~Wysyłanie maila weryfikującego użytkownika~~
 
 
 * ~~Rejestracja~~

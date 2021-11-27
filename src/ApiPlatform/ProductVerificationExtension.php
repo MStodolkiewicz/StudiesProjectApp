@@ -26,7 +26,9 @@ class ProductVerificationExtension implements QueryCollectionExtensionInterface
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $queryBuilder->andWhere(sprintf("%s.isVerified = :isVerified", $rootAlias))
-            ->setParameter('isVerified',true);
+            ->orWhere(sprintf("%s.user = :user", $rootAlias))
+            ->setParameter('isVerified',true)
+            ->setParameter('user', $this->security->getUser());
     }
 
 }

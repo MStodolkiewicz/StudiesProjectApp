@@ -42,7 +42,14 @@ services:
         class: App\Security\JsonHeaderRequestMatcher
 
     'ApiPlatform\Core\Bridge\Symfony\Bundle\SwaggerUi\SwaggerUiContext': '@api_platform.swagger_ui.context'
+
     Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
+
+    App\DataProvider\ProductDataProvider:
+        $itemDataProvider: '@api_platform.doctrine.orm.default.item_data_provider'
+        $collectionDataProvider: '@api_platform.doctrine.orm.default.collection_data_provider'
+#        $itemNormalizer: '@api_platform.jsonld.normalizer.item'
+
 
 
 

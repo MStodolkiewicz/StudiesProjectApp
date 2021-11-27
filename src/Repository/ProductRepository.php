@@ -46,6 +46,7 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
 }
 
 //'SELECT AVG(rate.value)

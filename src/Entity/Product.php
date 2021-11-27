@@ -166,6 +166,16 @@ class Product
      */
     private $subCategory;
 
+    /**
+     * @Groups({"product:read", "intake:read"})
+     */
+    private $avarageRate;
+
+    /**
+     * @Groups({"product:read", "intake:read"})
+     */
+    private $yourRate;
+
     public function __construct()
     {
         $this->rates = new ArrayCollection();
@@ -230,18 +240,6 @@ class Product
         return $this;
     }
 
-    public function getSize(): ?int
-    {
-        return $this->size;
-    }
-
-    public function setSize(int $size): self
-    {
-        $this->size = $size;
-
-        return $this;
-    }
-
     /**
      * @return bool
      */
@@ -262,17 +260,6 @@ class Product
         return $this;
     }
 
-    public function getIsDeleted(): ?bool
-    {
-        return $this->isDeleted;
-    }
-
-    public function setIsDeleted(bool $isDeleted): self
-    {
-        $this->isDeleted = $isDeleted;
-
-        return $this;
-    }
 
     public function getProteins(): ?string
     {
@@ -419,21 +406,16 @@ class Product
         return Carbon::instance($this->getCreatedAt())->diffForHumans();
     }
 
-//    /**
-//     * @Groups({"product:read", "intake:read"})
-//     */
-//    public function getAvarageRate(): float
-//    {
-//
-//        $avarage = 0;
-//        foreach ($this->rates as $rate){
-//            $avarage += $rate->getValue();
-//        }
-//
-//        $avarage /= sizeof($this->rates);
-//
-//        return $avarage;
-//    }
+
+    public function getAvarageRate(): ?float
+    {
+        return $this->avarageRate;
+    }
+
+    public function setAvarageRate($avarageRate)
+    {
+        $this->avarageRate = $avarageRate;
+    }
 
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
@@ -483,4 +465,20 @@ class Product
 
         return $this;
     }
- }
+
+    /**
+     * @return mixed
+     */
+    public function getYourRate()
+    {
+        return $this->yourRate;
+    }
+
+    /**
+     * @param mixed $yourRate
+     */
+    public function setYourRate($yourRate): void
+    {
+        $this->yourRate = $yourRate;
+    }
+}

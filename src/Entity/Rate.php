@@ -17,7 +17,9 @@ use Ramsey\Uuid\Uuid;
  * @ORM\Entity(repositoryClass=RateRepository::class)
  * @ApiResource(
  *     itemOperations={
- *          "get",
+ *          "get" = {
+ *              "security"="is_granted('EDIT',object)",
+ *          },
  *          "put" = {
  *              "security"="is_granted('EDIT',object)",
  *          },
@@ -26,7 +28,9 @@ use Ramsey\Uuid\Uuid;
  *          },
  *     },
  *     collectionOperations={
- *          "get",
+ *          "get" = {
+ *              "security"="is_granted('ROLE_ADMIN')"
+ *          },
  *          "post",
  *     },
  *     attributes={

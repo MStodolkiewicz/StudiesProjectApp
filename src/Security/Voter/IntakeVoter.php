@@ -35,9 +35,9 @@ class IntakeVoter extends Voter
         }
 
         // ... (check conditions and return true to grant permission) ...
+        if($this->security->isGranted("ROLE_ADMIN")) return true;
         switch ($attribute) {
             case 'EDIT':
-                if($this->security->isGranted("ROLE_ADMIN")) return true;
                 if($subject->getUser() == $user)  return true;
                 break;
         }
