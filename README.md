@@ -46,6 +46,7 @@ Security tutors:\
 [roznica pomiedzy access_control i security](https://symfonycasts.com/screencast/api-platform-security/previous-object) \
 [jezeli logika security dla entity bedzie bardziej skomplikowana](https://symfonycasts.com/screencast/api-platform-security/access-control-voter#play)
 
+---
 
 **Ważna część API, aby otrzymać poprawną dokumentację należy wysłać zapytanie pod:**
 
@@ -53,7 +54,29 @@ Security tutors:\
 
 `/api/products?format=json` itd.
 
+---
+**Możliwość "podszywania" się pod innych użytkowników dostępna jest po wykonaniu zapytania:**
+
+`http://localhost:8001/?_switch_user=user@user.pl` **z konta admina**
+
+---
+
+Tłumaczenia dostępne są obecnie pod taką komendą:
+
+`$translator->trans('user.login',[],'translations')`
+
+gdzie `$translator` to obiekt interfejsu `TranslatorInterface` więcej info:
+
+[Translations info](https://symfony.com/doc/5.4/translation.html#configuration)
+
+
+---
+
 TO DO:
+
+* pomyslec o tym czy nie dodac endpointa dla produktow do oceniania
+ex: `/api/products/{uuid}/rate`
+
 
 * dodac do produktu wyswietlajace dane w polu w formacie json-ld
 

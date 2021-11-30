@@ -2,7 +2,7 @@
 App\Entity\User:
   user_51:
     email: 'admin@admin.pl'
-    roles: [ 'ROLE_USER','ROLE_ADMIN' ]
+    roles: [ 'ROLE_USER','ROLE_ADMIN', 'ROLE_ALLOWED_TO_SWITCH' ]
     password: \$2y\$13\$uNwCY753w.UfRMgLaGqjsuJGnq5PdagYn2TpG3yNgG/v0iBPc6kQy
     username: 'admin'
     height: '<numberBetween(1, 280)>'

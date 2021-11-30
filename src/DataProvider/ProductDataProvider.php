@@ -61,9 +61,12 @@ class ProductDataProvider implements DenormalizedIdentifiersAwareItemDataProvide
         $product->setAvarageRate($this->productRepository->getAverageRate($product->getId()));
         /** @var Rate $yourRate */
         $yourRate
-            ? $product->setYourRate(['@id'=> $this->iriConverter->getIriFromItem($yourRate), '@type' => (new \ReflectionClass($yourRate))->getShortName(), 'value'=> $yourRate->getValue()])
-            : (object)[];
-
+            ? $product->setYourRate([
+                '@id'=> $this->iriConverter->getIriFromItem($yourRate),
+                '@type' => (new \ReflectionClass($yourRate))->getShortName(),
+                'value'=> $yourRate->getValue()
+                ])
+            : [];
 
         return $product;
     }

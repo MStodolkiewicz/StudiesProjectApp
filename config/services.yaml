@@ -50,6 +50,39 @@ services:
         $collectionDataProvider: '@api_platform.doctrine.orm.default.collection_data_provider'
 #        $itemNormalizer: '@api_platform.jsonld.normalizer.item'
 
+#    SONATA CLASSESS CONFIG
+    admin.category:
+        class: App\Admin\CategoryAdmin
+        arguments: [ ~, App\Entity\Category, ~ ]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Category }
+
+    admin.subcategory:
+        class: App\Admin\SubCategoryAdmin
+        arguments: [ ~, App\Entity\SubCategory, ~ ]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: SubCategory }
+
+    admin.product:
+        class: App\Admin\ProductAdmin
+        arguments: [ ~, App\Entity\Product, ~ ]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Product }
+
+    admin.user:
+        class: App\Admin\UserAdmin
+        arguments: [ ~, App\Entity\User, ~ ]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: User }
+
+    admin.rate:
+        class: App\Admin\RateAdmin
+        arguments: [ ~, App\Entity\Rate, ~ ]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Rate }
+
+
+
 
 
 
