@@ -93,15 +93,14 @@ class ProductAdmin extends AbstractAdmin
             ->addIdentifier('barCodeNumbers', TextType::class)
             ->addIdentifier('brand', TextType::class)
             ->add('user.email')
+            ->add('category.name')
+            ->add('subcategory.name')
             ->addIdentifier('isVerified', BooleanType::class)
             ->addIdentifier('isDeleted', BooleanType::class)
             ->addIdentifier('proteins', NumberType::class)
             ->addIdentifier('carbohydrates', NumberType::class)
             ->addIdentifier('fat', NumberType::class)
             ->addIdentifier('kcal', NumberType::class);
-
-        $list->add('category.name');
-
 
     }
 
