@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -32,21 +33,19 @@ class IntakeAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $form): void
     {
-        $form->with($this->translator->trans('user.content', [], 'translations'), ['class' => 'col-md-9'])
-            ->add('createdAt', DateTimeType::class, [
-                'input' => 'datetime_immutable'
+        $form->with($this->translator->trans('user.content', [], 'translations'))
+            ->add('product', ModelType::class, [
+                'class' => Product::class,
+                'property' => 'name',
             ])
-            ->end();
-
-        $form->with($this->translator->trans('user.meta', [], 'translations'), ['class' => 'col-md-3'])
+            ->add('amountInGrams',TextType::class)
+            ->add('mealType',TextType::class)
             ->add('user', ModelType::class, [
                 'class' => User::class,
                 'property' => 'email',
             ])
-
-            ->add('product', ModelType::class, [
-                'class' => Product::class,
-                'property' => 'name',
+            ->add('createdAt', DateTimeType::class, [
+                'input' => 'datetime_immutable'
             ])
             ->end();
     }
