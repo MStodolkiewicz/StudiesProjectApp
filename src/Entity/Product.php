@@ -245,6 +245,18 @@ class Product
         return null !== $this->deletedAt;
     }
 
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
+        return $this;
+    }
+
+
     public function getIsVerified(): ?bool
     {
         return $this->isVerified;

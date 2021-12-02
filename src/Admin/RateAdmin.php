@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Entity\Category;
+use App\Entity\Product;
 use App\Entity\Rate;
 use App\Entity\SubCategory;
 use App\Entity\User;
@@ -32,8 +33,12 @@ class RateAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $form): void
     {
-        $form->with($this->translator->trans('user.content', [], 'translations'), ['class' => 'col-md-9'])
+        $form->with($this->translator->trans('user.content', [], 'translations'), ['class' => 'col-md-9',])
             ->add('value', NumberType::class)
+            ->add('product', ModelType::class, [
+                'class' => Product::class,
+                'property' => 'name',
+            ])
             ->add('createdAt', DateTimeType::class, [
                 'input' => 'datetime_immutable'
             ])

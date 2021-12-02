@@ -1,10 +1,14 @@
 sonata_admin:
-    title: 'Sonata Admin'
+    title_logo: 'uploadedImages/logo.jpg'
+    title: 'Fit U Admin'
     dashboard:
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }
+    global_search:
+        empty_boxes: fade
 
 sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts: [admin]
+

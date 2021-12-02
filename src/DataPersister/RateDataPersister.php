@@ -34,7 +34,6 @@ class RateDataPersister implements ContextAwareDataPersisterInterface
     {
         /** @var Rate $data */
         $data->setUser($this->security->getUser());
-
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }

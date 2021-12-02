@@ -55,31 +55,39 @@ services:
         class: App\Admin\CategoryAdmin
         arguments: [ ~, App\Entity\Category, ~ ]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Category }
+            - { name: sonata.admin, manager_type: orm,group: 'Entities',icon: "<i class=\"fas fa-box-open\"></i>", label: Category }
 
     admin.subcategory:
         class: App\Admin\SubCategoryAdmin
         arguments: [ ~, App\Entity\SubCategory, ~ ]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: SubCategory }
+            - { name: sonata.admin, manager_type: orm,group: 'Entities', label: SubCategory }
 
     admin.product:
         class: App\Admin\ProductAdmin
         arguments: [ ~, App\Entity\Product, ~ ]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Product }
+            - { name: sonata.admin, manager_type: orm,group: 'Entities', label: Product }
 
     admin.user:
         class: App\Admin\UserAdmin
         arguments: [ ~, App\Entity\User, ~ ]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: User }
+            - { name: sonata.admin, manager_type: orm,group: 'User',icon: "<i class=\"fas fa-user\"></i>", label: User }
 
     admin.rate:
         class: App\Admin\RateAdmin
         arguments: [ ~, App\Entity\Rate, ~ ]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Rate }
+            - { name: sonata.admin, manager_type: orm,group: 'Entities', label: Rate }
+
+    admin.intake:
+        class: App\Admin\IntakeAdmin
+        arguments: [ ~, App\Entity\Intake, ~ ]
+        tags:
+            - { name: sonata.admin, manager_type: orm,group: 'Entities', label: Intake }
+
+
 
 
 

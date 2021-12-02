@@ -171,6 +171,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $password;
 
+    private $plainPassword;
+
     /**
      * @ORM\Column(type="string", length=255, nullable=false, unique=true)
      * @Groups({"user:read","user:write","intake:read"})
@@ -293,6 +295,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    public function getRolesAsString()
+    {
+        return implode(',', $this->roles);
+    }
+
+    public function setRolesAsString($string)
+    {
+        $this->setRoles(explode(',',$string));
+    }
+
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -332,7 +344,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+         $this->plainPassword = null;
     }
 
     public function setUsername(?string $username): self
@@ -505,6 +517,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param mixed $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }

@@ -29,7 +29,7 @@ class ProductAdmin extends AbstractAdmin
         $this->translator = $translator;
     }
 
-    private $fieldsArray = ['id', 'uuid', 'name', 'barCodeNumbers', 'brand', 'isVerified', 'proteins', 'carbohydrates', 'fat', 'kcal', 'createdAt'];
+    private $fieldsArray = ['id', 'uuid', 'name', 'barCodeNumbers', 'brand', 'isVerified','isDeleted', 'proteins', 'carbohydrates', 'fat', 'kcal', 'createdAt'];
 
     protected function configureFormFields(FormMapper $form): void
     {
@@ -38,6 +38,7 @@ class ProductAdmin extends AbstractAdmin
             ->add('barCodeNumbers', TextType::class)
             ->add('brand', TextType::class)
             ->add('isVerified', BooleanType::class)
+            ->add('deletedAt', DateTimeType::class)
             ->add('proteins', NumberType::class)
             ->add('carbohydrates', NumberType::class)
             ->add('fat', NumberType::class)
@@ -71,6 +72,7 @@ class ProductAdmin extends AbstractAdmin
             ->add('barCodeNumbers')
             ->add('brand')
             ->add('isVerified')
+            ->add('isDeleted')
             ->add('proteins')
             ->add('carbohydrates')
             ->add('fat')
@@ -92,6 +94,7 @@ class ProductAdmin extends AbstractAdmin
             ->addIdentifier('brand', TextType::class)
             ->add('user.email')
             ->addIdentifier('isVerified', BooleanType::class)
+            ->addIdentifier('isDeleted', BooleanType::class)
             ->addIdentifier('proteins', NumberType::class)
             ->addIdentifier('carbohydrates', NumberType::class)
             ->addIdentifier('fat', NumberType::class)
