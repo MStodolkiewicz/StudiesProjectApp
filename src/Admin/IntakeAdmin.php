@@ -28,7 +28,7 @@ class IntakeAdmin extends AbstractAdmin
         $this->translator = $translator;
     }
 
-    private $fieldsArray = ['id', 'uuid', 'createdAt'];
+    private $fieldsArray = ['id', 'uuid','product.name','amountInGrams','mealType','user.username', 'createdAt'];
 
     protected function configureFormFields(FormMapper $form): void
     {
@@ -43,6 +43,7 @@ class IntakeAdmin extends AbstractAdmin
                 'class' => User::class,
                 'property' => 'email',
             ])
+
             ->add('product', ModelType::class, [
                 'class' => Product::class,
                 'property' => 'name',
@@ -55,13 +56,7 @@ class IntakeAdmin extends AbstractAdmin
         foreach ($this->fieldsArray as $field) {
             $datagrid->add($field);
         }
-        $datagrid->add('category', null, [
-            'field_type' => EntityType::class,
-            'field_options' => [
-                'class' => Category::class,
-                'choice_label' => 'name',
-            ],
-        ]);
+
     }
 
     protected function configureListFields(ListMapper $list): void
