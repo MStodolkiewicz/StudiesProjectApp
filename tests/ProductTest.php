@@ -8,7 +8,7 @@ use App\Entity\Book;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use App\Entity\Category;
 
-class CategoryTest extends AbstractTest
+class ProductTest extends AbstractTest
 {
     // This trait provided by AliceBundle will take care of refreshing the database content to a known state before each test
     use RefreshDatabaseTrait;
@@ -19,10 +19,10 @@ class CategoryTest extends AbstractTest
 //        $this->assertResponseIsSuccessful();
 //    }
 
-    public function testGetCategoriesCollection(): void
+    public function testGetProductsCollection(): void
     {
         // The client implements Symfony HttpClient's `HttpClientInterface`, and the response `ResponseInterface`
-        $response = $this->createClientWithAdminCredentials()->request('GET', '/api/categories');
+        $response = $this->createClientWithUserCredentials()->request('GET', '/api/products');
 
         $this->assertResponseIsSuccessful();
         // Asserts that the returned content type is JSON-LD (the default)
@@ -30,31 +30,36 @@ class CategoryTest extends AbstractTest
 
         // Asserts that the returned JSON is a superset of this one
         $this->assertJsonContains([
-            '@context' => "/api/contexts/Category",
-            '@id' => "/api/categories",
+            '@context' => "/api/contexts/Product",
+            '@id' => "/api/products",
             '@type' => 'hydra:Collection',
-            "hydra:totalItems" => 51,
+            "hydra:totalItems" => 27,
             'hydra:view' => [
-                "@id" => "/api/categories?page=1",
+                "@id" => "/api/products?page=1",
                 "@type" => "hydra:PartialCollectionView",
-                "hydra:first" => "/api/categories?page=1",
-                "hydra:last" => "/api/categories?page=11",
-                "hydra:next" => "/api/categories?page=2",
+                "hydra:first" => "/api/products?page=1",
+                "hydra:last" => "/api/products?page=6",
+                "hydra:next" => "/api/products?page=2",
             ],
         ]);
 
         // Because test fixtures are automatically loaded between each test, you can assert on them
         $this->assertCount(5, $response->toArray()['hydra:member']);
-
-        // Asserts that the returned JSON is validated by the JSON Schema generated for this resource by API Platform
-        // This generated JSON Schema is also used in the OpenAPI spec!
-//        $this->assertMatchesResourceCollectionJsonSchema(Category::class);
     }
 
-    public function testCreateCategory(): void
+    public function testCreateProduct(): void
     {
-        $response = $this->createClientWithAdminCredentials()->request('POST', '/api/categories', ['json' => [
-            'name' => 'Fruits'
+
+        $response = $this->createClientWithCredentials()->request('POST', '/api/products', ['json' => [
+            "barCodeNumbers" => "123321123",
+            "name"=> "Batonik",
+            "brand"=> "Gregory",
+            "proteins"=> "22.2",
+            "carbohydrates"=> "10.1",
+            "fat"=> "9.4",
+            "kcal"=> "100.4",
+            "category"=> "",
+            "subCategory"=> "string"
         ]]);
 
         $this->assertResponseStatusCodeSame(201);
@@ -72,7 +77,7 @@ class CategoryTest extends AbstractTest
 
     public function testCreateInvalidCategory(): void
     {
-        $response = $this->createClientWithAdminCredentials()->request('POST', '/api/categories', ['json' => [
+        $response = $this->createClientWithCredentials()->request('POST', '/api/categories', ['json' => [
             'name' => 123
         ]]);
 
@@ -89,7 +94,7 @@ class CategoryTest extends AbstractTest
 
     public function testCreateValidCategoryWithInvalidSubcategory(): void
     {
-        $response = $this->createClientWithAdminCredentials()->request('POST', '/api/categories', ['json' => [
+        $response = $this->createClientWithCredentials()->request('POST', '/api/categories', ['json' => [
             'name' => "Owocki",
             'subCategories' => [
                 (object)["name" => 123],
@@ -109,7 +114,7 @@ class CategoryTest extends AbstractTest
 
     public function testUpdateCategory(): void
     {
-        $client = $this->createClientWithAdminCredentials();
+        $client = $this->createClientWithCredentials();
 
         $iri = $this->findIriBy(Category::class, ['name' => 'Mushrooms']);
 
@@ -126,7 +131,7 @@ class CategoryTest extends AbstractTest
 
     public function testDeleteCategoryAssignedToProduct(): void
     {
-        $client = $this->createClientWithAdminCredentials();
+        $client = $this->createClientWithCredentials();
         $categoryRepository = $this->getContainer()->get('doctrine')->getRepository(Category::class);
         $iri = $this->findIriBy(Category::class, ['name' => 'Mushrooms']);
 
@@ -138,7 +143,7 @@ class CategoryTest extends AbstractTest
 
     public function testEditCategoryByNormalUser(): void
     {
-        $client = $this->createClientWithUserCredentials();
+        $client = $this->createClientWithCredentials('user@user.pl', 'userStrongPass123');
         $categoryRepository = $this->getContainer()->get('doctrine')->getRepository(Category::class);
         $iri = $this->findIriBy(Category::class, ['name' => 'Mushrooms']);
 

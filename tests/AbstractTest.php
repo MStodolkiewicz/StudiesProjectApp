@@ -6,6 +6,8 @@ use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
+// LOOK IN FIXTURES FOR PRE SET USER ACCOUNTS : /fixtures/user.yaml
+
 abstract class AbstractTest extends ApiTestCase
 {
     private $token;
@@ -18,9 +20,16 @@ abstract class AbstractTest extends ApiTestCase
         self::bootKernel();
     }
 
-    protected function createClientWithCredentials($token = null): Client
+    protected function createClientWithAdminCredentials($token = null): Client
     {
-        $token = $token ?: $this->getToken();
+        $token = $token ?: $this->getToken('admin@admin.pl','adminStrongPass123');
+
+        return static::createClient([], ['headers' => ['authorization' => 'Bearer ' . $token,'content-type' => 'application/json']]);
+    }
+
+    protected function createClientWithUserCredentials($token = null): Client
+    {
+        $token = $token ?: $this->getToken('user@user.pl','userStrongPass123');
 
         return static::createClient([], ['headers' => ['authorization' => 'Bearer ' . $token,'content-type' => 'application/json']]);
     }
@@ -28,7 +37,7 @@ abstract class AbstractTest extends ApiTestCase
     /**
      * Use other credentials if needed.
      */
-    protected function getToken($body = []): string
+    protected function getToken($email,$password): string
     {
 
         if ($this->token) {
@@ -38,9 +47,9 @@ abstract class AbstractTest extends ApiTestCase
 
         $response = static::createClient()->request('POST', '/api/login',
             [
-                'json' => $body ?: [
-                    "username" => "admin@admin.pl",
-                    "password" => "adminStrongPass123"
+                'json' => [
+                    "username" =>  $email,
+                    "password" => $password
                 ],'headers' => ['content-type' => 'application/json']
             ]);
 
