@@ -7,6 +7,7 @@ use App\Tests\CustomApiTestCase;
 use App\Entity\Book;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use App\Entity\Category;
+use App\Entity\Product;
 
 class ProductTest extends AbstractTest
 {
@@ -50,7 +51,7 @@ class ProductTest extends AbstractTest
     public function testCreateProduct(): void
     {
 
-        $response = $this->createClientWithUserCredentials()->request('POST', '/api/products', ['json' => [
+        $response = $this->createClientWithAdminCredentials()->request('POST', '/api/products', ['json' => [
             "barCodeNumbers" => "123321123",
             "name"=> "Batonik",
             "brand"=> "Gregory",
@@ -62,7 +63,7 @@ class ProductTest extends AbstractTest
             "subCategory"=> "/api/sub_categories/f5dc315e-4f8e-4aca-a631-674bb9d45b03" 
         ]]);
 
-        $this->assertResponseStatusCodeSame(201); //Test database records change every time tests are executed. Right now it's gonna be error 400 every time.
+        $this->assertResponseStatusCodeSame(201); //Test db records change every time tests are executed. Right now it's gonna be error 400 every time.
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             "@context" => "/api/contexts/Category",
@@ -72,13 +73,41 @@ class ProductTest extends AbstractTest
             "createdAtAgo" => "1 second ago"
         ]);
         $this->assertMatchesRegularExpression('/\/api\/categories\/*/', $response->toArray()['@id']);
-        $this->assertMatchesResourceItemJsonSchema(Category::class);
+        $this->assertMatchesResourceItemJsonSchema(Product::class);
     }
 
-    public function testCreateInvalidCategory(): void
+    public function testCreateInvalidProduct(): void
     {
-        $response = $this->createClientWithAdminCredentials()->request('POST', '/api/categories', ['json' => [
-            'name' => 123
+        $response = $this->createClientWithUserCredentials()->request('POST', '/api/products', ['json' => [
+            "barCodeNumbers" => "123321123",
+            "name" => "Batonik",
+            "brand" => "Gregory",
+            "proteins" => "22.2",
+            "carbohydrates"=> "10.1",
+            "fat"=> "9.4",
+            "kcal"=> "113.8",
+        ]]);
+
+        $this->assertResponseStatusCodeSame(422);
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+
+        $this->assertJsonContains([
+            "@context" => "/api/contexts/ConstraintViolationList",
+            "@type" => "ConstraintViolationList"
+        ]);
+    }
+
+    public function testCreateValidProductWithInvalidCategory(): void
+    {
+        $response = $this->createClientWithUserCredentials()->request('POST', '/api/products', ['json' => [
+            "barCodeNumbers" => "123321123",
+            "name" => "Batonik",
+            "brand" => "Gregory",
+            "proteins" => "22.2",
+            "carbohydrates"=> "10.1",
+            "fat"=> "9.4",
+            "kcal"=> "113.8",
+            "category"=> "/api/categories/invalid", 
         ]]);
 
         $this->assertResponseStatusCodeSame(400);
@@ -88,80 +117,36 @@ class ProductTest extends AbstractTest
             "@context" => "/api/contexts/Error",
             "@type" => "hydra:Error",
             "hydra:title" => "An error occurred",
-            "hydra:description" => "The type of the \"name\" attribute must be \"string\", \"integer\" given.",
+            "hydra:description" => 'Invalid IRI "/api/categories/invalid".'
         ]);
     }
 
-    public function testCreateValidCategoryWithInvalidSubcategory(): void
-    {
-        $response = $this->createClientWithAdminCredentials()->request('POST', '/api/categories', ['json' => [
-            'name' => "Owocki",
-            'subCategories' => [
-                (object)["name" => 123],
-            ]
-        ]]);
-
-        $this->assertResponseStatusCodeSame(400);
-        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
-
-        $this->assertJsonContains([
-            "@context" => "/api/contexts/Error",
-            "@type" => "hydra:Error",
-            "hydra:title" => "An error occurred",
-            "hydra:description" => "The type of the \"name\" attribute must be \"string\", \"integer\" given.",
-        ]);
-    }
-
-    public function testUpdateCategory(): void
+    public function testUpdateProduct(): void
     {
         $client = $this->createClientWithAdminCredentials();
 
-        $iri = $this->findIriBy(Category::class, ['name' => 'Mushrooms']);
+        $iri = $this->findIriBy(Product::class, ['name' => 'Aut dolores perspiciatis.']);
 
         $client->request('PUT', $iri, ['json' => [
-            'name' => 'Vegetables'
+            'name' => 'Aut dolores perspiciatises.'
         ]]);
 
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
             '@id' => $iri,
-            'name' => 'Vegetables',
+            'name' => 'Aut dolores perspiciatises.',
         ]);
     }
 
-    public function testDeleteCategoryAssignedToProduct(): void
-    {
-        $client = $this->createClientWithAdminCredentials();
-        $categoryRepository = $this->getContainer()->get('doctrine')->getRepository(Category::class);
-        $iri = $this->findIriBy(Category::class, ['name' => 'Mushrooms']);
-
-        $client->request('DELETE', $iri);
-        $this->assertResponseStatusCodeSame(500);
-        $category = $categoryRepository->findOneBy(['name' => 'Mushrooms']);
-        $this->assertNotNull($category);
-    }
-
-    public function testEditCategoryByNormalUser(): void
+    public function testDeleteProductByNormalUser(): void
     {
         $client = $this->createClientWithUserCredentials();
-        $categoryRepository = $this->getContainer()->get('doctrine')->getRepository(Category::class);
-        $iri = $this->findIriBy(Category::class, ['name' => 'Mushrooms']);
+        $productRepository = $this->getContainer()->get('doctrine')->getRepository(Product::class);
+        $iri = $this->findIriBy(Product::class, ['name' => 'Sit in.']);
 
-        $client->request('PUT', $iri, [
-            'json' => [
-                "name" => "TuttiFruit",
-            ]
-        ]);
-
+        $client->request('DELETE', $iri);
         $this->assertResponseStatusCodeSame(403);
-        $category = $categoryRepository->findOneBy(['name' => 'Mushrooms']);
-        $this->assertNotNull($category);
-
-        $this->assertJsonContains([
-            "@context" => "/api/contexts/Error",
-            "@type" => "hydra:Error",
-            "hydra:title" => "An error occurred",
-            "hydra:description" => "You are not allowed to change this resource!",
-        ]);
+        $product = $productRepository->findOneBy(['name' => 'Sit in.']);
+        $this->assertNotNull($product);
     }
 }
