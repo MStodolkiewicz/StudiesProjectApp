@@ -50,19 +50,19 @@ class ProductTest extends AbstractTest
     public function testCreateProduct(): void
     {
 
-        $response = $this->createClientWithCredentials()->request('POST', '/api/products', ['json' => [
+        $response = $this->createClientWithUserCredentials()->request('POST', '/api/products', ['json' => [
             "barCodeNumbers" => "123321123",
             "name"=> "Batonik",
             "brand"=> "Gregory",
             "proteins"=> "22.2",
             "carbohydrates"=> "10.1",
             "fat"=> "9.4",
-            "kcal"=> "100.4",
-            "category"=> "",
-            "subCategory"=> "string"
+            "kcal"=> "213.8",
+            "category"=> "/api/categories/11c2d8d4-3911-4bef-8f6a-ffeac99c1cab", 
+            "subCategory"=> "/api/sub_categories/f5dc315e-4f8e-4aca-a631-674bb9d45b03" 
         ]]);
 
-        $this->assertResponseStatusCodeSame(201);
+        $this->assertResponseStatusCodeSame(201); //Test database records change every time tests are executed. Right now it's gonna be error 400 every time.
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             "@context" => "/api/contexts/Category",
@@ -77,7 +77,7 @@ class ProductTest extends AbstractTest
 
     public function testCreateInvalidCategory(): void
     {
-        $response = $this->createClientWithCredentials()->request('POST', '/api/categories', ['json' => [
+        $response = $this->createClientWithAdminCredentials()->request('POST', '/api/categories', ['json' => [
             'name' => 123
         ]]);
 
@@ -94,7 +94,7 @@ class ProductTest extends AbstractTest
 
     public function testCreateValidCategoryWithInvalidSubcategory(): void
     {
-        $response = $this->createClientWithCredentials()->request('POST', '/api/categories', ['json' => [
+        $response = $this->createClientWithAdminCredentials()->request('POST', '/api/categories', ['json' => [
             'name' => "Owocki",
             'subCategories' => [
                 (object)["name" => 123],
@@ -114,7 +114,7 @@ class ProductTest extends AbstractTest
 
     public function testUpdateCategory(): void
     {
-        $client = $this->createClientWithCredentials();
+        $client = $this->createClientWithAdminCredentials();
 
         $iri = $this->findIriBy(Category::class, ['name' => 'Mushrooms']);
 
@@ -131,7 +131,7 @@ class ProductTest extends AbstractTest
 
     public function testDeleteCategoryAssignedToProduct(): void
     {
-        $client = $this->createClientWithCredentials();
+        $client = $this->createClientWithAdminCredentials();
         $categoryRepository = $this->getContainer()->get('doctrine')->getRepository(Category::class);
         $iri = $this->findIriBy(Category::class, ['name' => 'Mushrooms']);
 
@@ -143,7 +143,7 @@ class ProductTest extends AbstractTest
 
     public function testEditCategoryByNormalUser(): void
     {
-        $client = $this->createClientWithCredentials('user@user.pl', 'userStrongPass123');
+        $client = $this->createClientWithUserCredentials();
         $categoryRepository = $this->getContainer()->get('doctrine')->getRepository(Category::class);
         $iri = $this->findIriBy(Category::class, ['name' => 'Mushrooms']);
 
