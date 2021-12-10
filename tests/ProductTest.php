@@ -1,5 +1,5 @@
 <?php
-#tests/CategoryTest.php
+#tests/ProductTest.php
 
 namespace App\Tests;
 
@@ -50,6 +50,7 @@ class ProductTest extends AbstractTest
 
     public function testCreateProduct(): void
     {
+        $iri = $this->findIriBy(Category::class, ['name' => 'Mushrooms']);
 
         $response = $this->createClientWithAdminCredentials()->request('POST', '/api/products', ['json' => [
             "barCodeNumbers" => "123321123",
@@ -59,21 +60,18 @@ class ProductTest extends AbstractTest
             "carbohydrates"=> "10.1",
             "fat"=> "9.4",
             "kcal"=> "213.8",
-            "category"=> "/api/categories/11c2d8d4-3911-4bef-8f6a-ffeac99c1cab", 
-            "subCategory"=> "/api/sub_categories/f5dc315e-4f8e-4aca-a631-674bb9d45b03" 
+            "category"=> $iri
         ]]);
 
-        $this->assertResponseStatusCodeSame(201); //Test db records change every time tests are executed. Right now it's gonna be error 400 every time.
+        $this->assertResponseStatusCodeSame(201);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
-            "@context" => "/api/contexts/Category",
-            "@type" => "Category",
-            "name" => "Fruits",
-            "subCategories" => [],
+            "@context" => "/api/contexts/Product",
+            "@type" => "Product",
+            "name" => "Batonik",
             "createdAtAgo" => "1 second ago"
         ]);
-        $this->assertMatchesRegularExpression('/\/api\/categories\/*/', $response->toArray()['@id']);
-        $this->assertMatchesResourceItemJsonSchema(Product::class);
+        $this->assertMatchesRegularExpression('/\/api\/products\/*/', $response->toArray()['@id']);
     }
 
     public function testCreateInvalidProduct(): void
