@@ -6,7 +6,6 @@ namespace App\Tests;
 use App\Tests\CustomApiTestCase;
 use App\Entity\Book;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
-use App\Entity\Ingredient;
 use App\Entity\Intake;
 use App\Entity\Product;
 
