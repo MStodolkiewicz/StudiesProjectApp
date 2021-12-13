@@ -14,12 +14,6 @@ class SubCategoryTest extends AbstractTest
     // This trait provided by AliceBundle will take care of refreshing the database content to a known state before each test
     use RefreshDatabaseTrait;
 
-//    public function testGetCategories(): void
-//    {
-//        $response = $this->createClientWithCredentials()->request('GET', '/api/categories');
-//        $this->assertResponseIsSuccessful();
-//    }
-
     public function testGetSubCategoriesCollection(): void
     {
         // The client implements Symfony HttpClient's `HttpClientInterface`, and the response `ResponseInterface`

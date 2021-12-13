@@ -63,8 +63,7 @@ class CategoryTest extends AbstractTest
             "@context" => "/api/contexts/Category",
             "@type" => "Category",
             "name" => "Fruits",
-            "subCategories" => [],
-            "createdAtAgo" => "1 second ago"
+            "subCategories" => []
         ]);
         $this->assertMatchesRegularExpression('/\/api\/categories\/*/', $response->toArray()['@id']);
         $this->assertMatchesResourceItemJsonSchema(Category::class);

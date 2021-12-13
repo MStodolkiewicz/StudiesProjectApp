@@ -14,12 +14,6 @@ class ProductTest extends AbstractTest
     // This trait provided by AliceBundle will take care of refreshing the database content to a known state before each test
     use RefreshDatabaseTrait;
 
-//    public function testGetCategories(): void
-//    {
-//        $response = $this->createClientWithCredentials()->request('GET', '/api/categories');
-//        $this->assertResponseIsSuccessful();
-//    }
-
     public function testGetProductsCollection(): void
     {
         // The client implements Symfony HttpClient's `HttpClientInterface`, and the response `ResponseInterface`
@@ -119,7 +113,7 @@ class ProductTest extends AbstractTest
         ]);
     }
 
-    public function testUpdateProduct(): void
+    public function testUpdateProduct(): void //YourRate
     {
         $client = $this->createClientWithAdminCredentials();
 
@@ -136,7 +130,36 @@ class ProductTest extends AbstractTest
         ]);
     }
 
-    public function testDeleteProductByNormalUser(): void
+    public function testUpdateProductwithoutAuthority(): void //YourRate
+    {
+        $client = $this->createClientWithUserCredentials();
+
+        $iri = $this->findIriBy(Product::class, ['name' => 'Sed aut quia.']);
+
+        $client->request('PUT', $iri, ['json' => [
+            'name' => 'Aut dolores perspiciatises.'
+        ]]);
+
+        $this->assertResponseStatusCodeSame(403);
+        $this->assertJsonContains([
+            '@id' => $iri,
+            'name' => 'Aut dolores perspiciatises.',
+        ]);
+    }
+
+    public function testDeleteProductByAdmin(): void //YourRate
+    {
+        $client = $this->createClientWithAdminCredentials();
+        $productRepository = $this->getContainer()->get('doctrine')->getRepository(Product::class);
+        $iri = $this->findIriBy(Product::class, ['name' => 'Vero animi.']);
+
+        $client->request('DELETE', $iri);
+        $this->assertResponseIsSuccessful();
+        $product = $productRepository->findOneBy(['name' => 'Vero animi.']);
+        $this->assertNull($product);
+    }
+
+    public function testDeleteProductByNormalUser(): void //YourRate
     {
         $client = $this->createClientWithUserCredentials();
         $productRepository = $this->getContainer()->get('doctrine')->getRepository(Product::class);
