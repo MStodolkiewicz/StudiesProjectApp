@@ -7,7 +7,6 @@ use App\Tests\CustomApiTestCase;
 use App\Entity\Book;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use App\Entity\Ingredient;
-use App\Entity\Category;
 use App\Entity\Product;
 
 class IngredientTest extends AbstractTest
@@ -121,13 +120,9 @@ class IngredientTest extends AbstractTest
         ]]);
 
         $this->assertResponseStatusCodeSame(403);
-        $this->assertJsonContains([
-            '@id' => $iri,
-            'name' => 'Egg',
-        ]);
     }
 
-    public function testDeleteProductByAdmin(): void
+    public function testDeleteIngredientByAdmin(): void
     {
         $client = $this->createClientWithAdminCredentials();
         $productRepository = $this->getContainer()->get('doctrine')->getRepository(Ingredient::class);
@@ -139,7 +134,7 @@ class IngredientTest extends AbstractTest
         $this->assertNull($product);
     }
 
-    public function testDeleteProductByNormalUser(): void //ValidatoNotFinished
+    public function testDeleteIngredientByNormalUser(): void //ValidatoNotFinished
     {
         $client = $this->createClientWithUserCredentials();
         $productRepository = $this->getContainer()->get('doctrine')->getRepository(Ingredient::class);
