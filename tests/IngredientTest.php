@@ -125,24 +125,24 @@ class IngredientTest extends AbstractTest
     public function testDeleteIngredientByAdmin(): void
     {
         $client = $this->createClientWithAdminCredentials();
-        $productRepository = $this->getContainer()->get('doctrine')->getRepository(Ingredient::class);
+        $ingredientRepository = $this->getContainer()->get('doctrine')->getRepository(Ingredient::class);
         $iri = $this->findIriBy(Ingredient::class, ['name' => 'Ea quo.']);
 
         $client->request('DELETE', $iri);
         $this->assertResponseIsSuccessful();
-        $product = $productRepository->findOneBy(['name' => 'Ea quo.']);
-        $this->assertNull($product);
+        $ingredient = $ingredientRepository->findOneBy(['name' => 'Ea quo.']);
+        $this->assertNull($ingredient);
     }
 
     public function testDeleteIngredientByNormalUser(): void //ValidatoNotFinished
     {
         $client = $this->createClientWithUserCredentials();
-        $productRepository = $this->getContainer()->get('doctrine')->getRepository(Ingredient::class);
+        $ingredientRepository = $this->getContainer()->get('doctrine')->getRepository(Ingredient::class);
         $iri = $this->findIriBy(Ingredient::class, ['name' => 'Nostrum dolore.']);
 
         $client->request('DELETE', $iri);
         $this->assertResponseStatusCodeSame(403);
-        $product = $productRepository->findOneBy(['name' => 'Nostrum dolore.']);
-        $this->assertNotNull($product);
+        $ingredient = $ingredientRepository->findOneBy(['name' => 'Nostrum dolore.']);
+        $this->assertNotNull($ingredient);
     }
 }

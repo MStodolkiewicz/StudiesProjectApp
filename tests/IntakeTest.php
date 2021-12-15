@@ -131,24 +131,24 @@ class IntakeTest extends AbstractTest
     public function testDeleteIntakeByAdmin(): void
     {
         $client = $this->createClientWithAdminCredentials();
-        $productRepository = $this->getContainer()->get('doctrine')->getRepository(Intake::class);
+        $intakeRepository = $this->getContainer()->get('doctrine')->getRepository(Intake::class);
         $iri = $this->findIriBy(Intake::class, ['mealType' => 'numquam']);
 
         $client->request('DELETE', $iri);
         $this->assertResponseIsSuccessful();
-        $product = $productRepository->findOneBy(['mealType' => 'numquam']);
-        $this->assertNull($product);
+        $intake = $intakeRepository->findOneBy(['mealType' => 'numquam']);
+        $this->assertNull($intake);
     }
 
     public function testDeleteIntakeByNormalUser(): void
     {
         $client = $this->createClientWithUserCredentials();
-        $productRepository = $this->getContainer()->get('doctrine')->getRepository(Intake::class);
+        $intakeRepository = $this->getContainer()->get('doctrine')->getRepository(Intake::class);
         $iri = $this->findIriBy(Intake::class, ['mealType' => 'consequatur']);
 
         $client->request('DELETE', $iri);
         $this->assertResponseStatusCodeSame(403);
-        $product = $productRepository->findOneBy(['mealType' => 'consequatur']);
-        $this->assertNotNull($product);
+        $intake = $intakeRepository->findOneBy(['mealType' => 'consequatur']);
+        $this->assertNotNull($intake);
     }
 }

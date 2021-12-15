@@ -139,7 +139,6 @@ class RateTest extends AbstractTest
     public function testDeleteRateByAdmin(): void
     {
         $client = $this->createClientWithAdminCredentials();
-        $productRepository = $this->getContainer()->get('doctrine')->getRepository(Rate::class);
         $iri = $this->findIriBy(Rate::class, ['value' => 5]);
 
         $client->request('DELETE', $iri);
@@ -149,7 +148,6 @@ class RateTest extends AbstractTest
     public function testDeleteRateByNormalUser(): void
     {
         $client = $this->createClientWithUserCredentials();
-        $productRepository = $this->getContainer()->get('doctrine')->getRepository(Rate::class);
         $iri = $this->findIriBy(Rate::class, ['value' => 5]);
 
         $client->request('DELETE', $iri);
