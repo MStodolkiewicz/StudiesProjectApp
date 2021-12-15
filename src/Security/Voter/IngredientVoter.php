@@ -21,7 +21,7 @@ class IngredientVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['EDIT', 'DELETE'])
+        return in_array($attribute, ['EDIT'])
             && $subject instanceof Ingredient;
     }
 
@@ -38,9 +38,6 @@ class IngredientVoter extends Voter
             case 'EDIT':
                 if($this->security->isGranted("ROLE_ADMIN")) return true;
                 if($user == $subject->getUser()) return true;
-                break;
-            case 'DELETE':
-                if($this->security->isGranted("ROLE_ADMIN")) return true;
                 break;
         }
 

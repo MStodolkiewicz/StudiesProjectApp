@@ -109,7 +109,7 @@ class IngredientTest extends AbstractTest
         ]);
     }
 
-    public function testUpdateIngredientWithoutAuthority(): void //ValidatorNotFinished
+    public function testUpdateIngredientWithoutAuthority(): void 
     {
         $client = $this->createClientWithUserCredentials();
 
@@ -119,7 +119,7 @@ class IngredientTest extends AbstractTest
             'name' => 'Egg'
         ]]);
 
-        $this->assertResponseStatusCodeSame(403);
+        $this->assertResponseStatusCodeSame(422);
     }
 
     public function testDeleteIngredientByAdmin(): void

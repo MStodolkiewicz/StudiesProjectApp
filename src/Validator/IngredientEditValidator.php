@@ -40,23 +40,23 @@ class IngredientEditValidator extends ConstraintValidator
         $originalIntake = $this->entityManager->getUnitOfWork()->getOriginalEntityData($value);
 
         if($this->security->isGranted("ROLE_ADMIN")) return;
-        //New Rate being created
+
         if(!$originalIntake){
             $isRateAlreadyCreated = true == $this->ingredientRepository->findOneBy(['name'=> $value->getName()]);
             if($isRateAlreadyCreated){
                 $this->context->buildViolation('This ingredient is already created.')
                     ->addViolation();
             }
-            //Rate being edited
+
         }else{
             if($value->getProduct()->getId() != $originalIntake['product_id']){
                 $this->context->buildViolation('Cannot change product !')
                     ->addViolation();
             }
-//            if ($value->getUser() !== $currentUser) {
-//                $this->context->buildViolation('Not an owner of this object.')
-//                    ->addViolation();
-//            }
+            if ($value->getProduct()->getUser() !== $currentUser) {
+                $this->context->buildViolation('Not an owner of this object.')
+                    ->addViolation();
+            }
         }
 
     }

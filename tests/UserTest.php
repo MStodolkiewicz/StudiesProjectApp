@@ -154,21 +154,10 @@ class UserTest extends AbstractTest
         ]]);
 
         $this->assertResponseStatusCodeSame(204);
-        $this->assertJsonContains([
-            "@context" => "/api/contexts/User",
-            "@type" => "Users",
-            "email"=> "Example@example.com",
-            "roles"=> ["ROLE_USER"],
-            "password" => "ExamplePass123",
-            "username" => "ExampleUser",
-            "height" => '180',
-            "weight" => 80,
-            "birthDate" => "2021-12-15T11:08:25.769Z"
-        ]);
+
         $userRepository = $this->getContainer()->get('doctrine')->getRepository(User::class);
         $user = $userRepository->findOneBy(['username' => "TestRegisterUser"]);
         $this->assertNotNull($user);
-        $this->assertMatchesRegularExpression('/\/api\/users\/*/', $response->toArray()['@id']);
     }
 
     public function testRegisterInvalidUser(): void

@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  *              "security"="is_granted('EDIT',object)",
  *          },
  *          "delete" = {
- *              "security"="is_granted('DELETE',object)",
+ *              "security"="is_granted('EDIT',object)",
  *          },
  *     },
  *     collectionOperations={
