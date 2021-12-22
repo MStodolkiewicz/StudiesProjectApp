@@ -15,7 +15,7 @@ use ApiPlatform\Core\DataProvider\DenormalizedIdentifiersAwareItemDataProviderIn
 use App\Repository\RateRepository;
 use Symfony\Component\Security\Core\Security;
 
-class ProductDataProvider implements DenormalizedIdentifiersAwareItemDataProviderInterface, RestrictedDataProviderInterface, CollectionDataProviderInterface
+class ProductDataProvider
 {
 
     private $itemDataProvider;
@@ -27,8 +27,6 @@ class ProductDataProvider implements DenormalizedIdentifiersAwareItemDataProvide
     private $security;
 
     private $rateRepository;
-
-    private $itemNormalizer;
 
     private $iriConverter;
 
@@ -47,11 +45,11 @@ class ProductDataProvider implements DenormalizedIdentifiersAwareItemDataProvide
     {
         return $resourceClass == Product::class;
     }
-
+/*
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): ?Product
     {
 
-        /** @var Product $product */
+        /** @var Product $product *//*
         $product = $this->itemDataProvider->getItem($resourceClass, $id, $operationName, $context);
 
         if (!$product) {
@@ -59,7 +57,7 @@ class ProductDataProvider implements DenormalizedIdentifiersAwareItemDataProvide
         }
 
         $product->setAvarageRate($this->productRepository->getAverageRate($product->getId()));
-        /** @var Rate $yourRate */
+        /** @var Rate $yourRate *//*
         $yourRate
             ? $product->setYourRate([
                 '@id'=> $this->iriConverter->getIriFromItem($yourRate),
@@ -73,7 +71,7 @@ class ProductDataProvider implements DenormalizedIdentifiersAwareItemDataProvide
 
     public function getCollection(string $resourceClass, string $operationName = null)
     {
-        /** @var Product[] $products */
+        /** @var Product[] $products *//*
         $products = $this->collectionDataProvider->getCollection($resourceClass, $operationName);
 
         if(!$products){
@@ -84,7 +82,7 @@ class ProductDataProvider implements DenormalizedIdentifiersAwareItemDataProvide
         //is that a proper practice ? dunno atm...
         //maybe it is optimized on a query execution level by doctrine... but also not 100% sure about it
         foreach ($products as $product){
-            /** @var Rate $yourRate */
+            /** @var Rate $yourRate *//*
             $yourRate = $this->rateRepository->getUsersRateForProduct($this->security->getUser()->getId(), $product->getId());
             $yourRate
                 ? $product->setYourRate(['@id'=> $this->iriConverter->getIriFromItem($yourRate), '@type' => (new \ReflectionClass($yourRate))->getShortName(), 'value'=> $yourRate->getValue()])
@@ -96,4 +94,5 @@ class ProductDataProvider implements DenormalizedIdentifiersAwareItemDataProvide
 
 
     }
+    */
 }

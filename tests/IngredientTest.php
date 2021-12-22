@@ -57,20 +57,22 @@ class IngredientTest extends AbstractTest
         $this->assertMatchesRegularExpression('/\/api\/ingredients\/*/', $response->toArray()['@id']);
     }
 
-    public function testCreateInvalidIngredient(): void //YourRate
+    public function testCreateInvalidIngredient(): void
     {
         $iri = $this->findIriBy(Product::class, ['name' => 'Sit in.']);
         $response = $this->createClientWithUserCredentials()->request('POST', '/api/ingredients', ['json' => [
-            "name" => "311",
+            "name" => 311,
             "product" => $iri
         ]]);
 
-        $this->assertResponseStatusCodeSame(422);
+        $this->assertResponseStatusCodeSame(400);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
 
         $this->assertJsonContains([
-            "@context" => "/api/contexts/ConstraintViolationList",
-            "@type" => "ConstraintViolationList"
+            '@context' => '/api/contexts/Error',
+            '@type' => 'hydra:Error',
+            'hydra:title' => 'An error occurred',
+            'hydra:description' => 'The type of the "name" attribute must be "string", "integer" given.'
         ]);
     }
 
@@ -132,17 +134,5 @@ class IngredientTest extends AbstractTest
         $this->assertResponseIsSuccessful();
         $ingredient = $ingredientRepository->findOneBy(['name' => 'Ea quo.']);
         $this->assertNull($ingredient);
-    }
-
-    public function testDeleteIngredientByNormalUser(): void //ValidatoNotFinished
-    {
-        $client = $this->createClientWithUserCredentials();
-        $ingredientRepository = $this->getContainer()->get('doctrine')->getRepository(Ingredient::class);
-        $iri = $this->findIriBy(Ingredient::class, ['name' => 'Nostrum dolore.']);
-
-        $client->request('DELETE', $iri);
-        $this->assertResponseStatusCodeSame(403);
-        $ingredient = $ingredientRepository->findOneBy(['name' => 'Nostrum dolore.']);
-        $this->assertNotNull($ingredient);
     }
 }

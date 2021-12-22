@@ -37,7 +37,7 @@ class IntakeTest extends AbstractTest
         $this->assertCount(5, $response->toArray()['hydra:member']);
     }
 
-    public function testCreateIntake(): void //YourRate
+    public function testCreateIntake(): void
     {
         $iri = $this->findIriBy(Product::class, ['name' => 'Sit in.']);
 
@@ -51,28 +51,29 @@ class IntakeTest extends AbstractTest
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             "@context" => "/api/contexts/Intake",
-            "@type" => "Intakes",
+            "@type" => "Intake",
             "amountInGrams"=> "100",
             "mealType"=> "Meat",
         ]);
         $this->assertMatchesRegularExpression('/\/api\/intakes\/*/', $response->toArray()['@id']);
     }
 
-    public function testCreateInvalidIntake(): void //YourRate
+    public function testCreateInvalidIntake(): void
     {
         $iri = $this->findIriBy(Product::class, ['name' => 'Sit in.']);
         $response = $this->createClientWithUserCredentials()->request('POST', '/api/intakes', ['json' => [
-            "amountInGrams"=> "Alaska",
+            "amountInGrams"=> 10,
             "mealType"=> "Meat",
             "product"=> $iri
         ]]);
 
-        $this->assertResponseStatusCodeSame(422);
+        $this->assertResponseStatusCodeSame(400);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
 
         $this->assertJsonContains([
-            "@context" => "/api/contexts/ConstraintViolationList",
-            "@type" => "ConstraintViolationList"
+            '@context' => '/api/contexts/Error',
+            '@type' => 'hydra:Error',
+            'hydra:title' => 'An error occurred',
         ]);
     }
 

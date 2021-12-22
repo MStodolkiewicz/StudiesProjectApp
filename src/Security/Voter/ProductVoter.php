@@ -40,7 +40,7 @@ class ProductVoter extends Voter
         switch ($attribute) {
             case 'EDIT':
                 if($this->security->isGranted("ROLE_ADMIN")) return true;
-                if(!$subject->getIsVerified() && !$subject->getIsDeleted() && $subject->getUser() === $user) return true;
+                if(!$subject->getIsVerified() && !$subject->isDeleted() && $subject->getUser() === $user) return true;
         }
 
         return false;

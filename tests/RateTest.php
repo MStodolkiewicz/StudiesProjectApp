@@ -37,12 +37,12 @@ class RateTest extends AbstractTest
         $this->assertCount(5, $response->toArray()['hydra:member']);
     }
 
-    public function testCreateRate(): void //YourRate
+    public function testCreateRate(): void 
     {
         $iri = $this->findIriBy(Product::class, ['name' => 'Sit in.']);
 
         $response = $this->createClientWithUserCredentials()->request('POST', '/api/rates', ['json' => [
-            "value"=> 0,
+            "value"=> 4,
             "product"=> $iri
         ]]);
 
@@ -50,13 +50,13 @@ class RateTest extends AbstractTest
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
             "@context" => "/api/contexts/Rate",
-            "@type" => "Rates",
-            "value"=> 0,
+            "@type" => "Rate",
+            "value"=> 4,
         ]);
         $this->assertMatchesRegularExpression('/\/api\/rates\/*/', $response->toArray()['@id']);
     }
 
-    public function testCreateInvalidRate(): void //YourRate
+    public function testCreateInvalidRate(): void
     {
         $iri = $this->findIriBy(Product::class, ['name' => 'Sit in.']);
         $response = $this->createClientWithUserCredentials()->request('POST', '/api/rates', ['json' => [

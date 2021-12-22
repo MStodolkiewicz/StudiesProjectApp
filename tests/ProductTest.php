@@ -141,10 +141,6 @@ class ProductTest extends AbstractTest
         ]]);
 
         $this->assertResponseStatusCodeSame(403);
-        $this->assertJsonContains([
-            '@id' => $iri,
-            'name' => 'Aut dolores perspiciatises.',
-        ]);
     }
 
     public function testDeleteProductByAdmin(): void //YourRate
