@@ -227,6 +227,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $isVerified = false;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read","user:write"})
+     */
+    private $desiredProtein;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read","user:write"})
+     */
+    private $desiredFat;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read","user:write"})
+     */
+    private $desiredWeight;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read","user:write"})
+     */
+    private $desiredCarbohydrates;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"user:read","user:write"})
+     */
+    private $desiredCalories;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -531,6 +561,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPlainPassword($plainPassword)
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function getDesiredProtein(): ?float
+    {
+        return $this->desiredProtein;
+    }
+
+    public function setDesiredProtein(?float $desiredProtein): self
+    {
+        $this->desiredProtein = $desiredProtein;
+
+        return $this;
+    }
+
+    public function getDesiredFat(): ?float
+    {
+        return $this->desiredFat;
+    }
+
+    public function setDesiredFat(?float $desiredFat): self
+    {
+        $this->desiredFat = $desiredFat;
+
+        return $this;
+    }
+
+    public function getDesiredWeight(): ?float
+    {
+        return $this->desiredWeight;
+    }
+
+    public function setDesiredWeight(?float $desiredWeight): self
+    {
+        $this->desiredWeight = $desiredWeight;
+
+        return $this;
+    }
+
+    public function getDesiredCarbohydrates(): ?float
+    {
+        return $this->desiredCarbohydrates;
+    }
+
+    public function setDesiredCarbohydrates(?float $desiredCarbohydrates): self
+    {
+        $this->desiredCarbohydrates = $desiredCarbohydrates;
+
+        return $this;
+    }
+
+    public function getDesiredCalories(): ?float
+    {
+        return $this->desiredCalories;
+    }
+
+    public function setDesiredCalories(?float $desiredCalories): self
+    {
+        $this->desiredCalories = $desiredCalories;
 
         return $this;
     }
