@@ -33,9 +33,6 @@ use Ramsey\Uuid\Uuid;
  *          },
  *          "post",
  *     },
- *     attributes={
- *          "pagination_items_per_page"=5
- *     }
  *     )
  * @RateEdit
  */

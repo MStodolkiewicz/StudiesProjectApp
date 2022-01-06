@@ -14,6 +14,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Validator\IsMealTypeProper;
+
 
 /**
  * @ORM\Entity(repositoryClass=IntakeRepository::class)
@@ -34,11 +39,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "get",
  *           "post"
  *     },
- *     attributes={
- *          "pagination_items_per_page"=5
- *     }
  *     )
  * @IntakeEdit
+ * @ApiFilter(DateFilter::class, properties={"createdAt"})
+ * @ApiFilter(SearchFilter::class, properties={"mealType": "exact"})
  */
 class Intake
 {
@@ -82,6 +86,7 @@ class Intake
      * @Groups({"intake:read","intake:write"})
      * @Assert\NotBlank()
      * @Assert\NotNull()
+     * @IsMealTypeProper()
      */
     private $mealType;
 

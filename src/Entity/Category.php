@@ -36,9 +36,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "security_message"="You are not allowed to add this resource!"
  *           }
  *     },
- *     attributes={
- *          "pagination_items_per_page"=5
- *     }
  *     )
  */
 class Category

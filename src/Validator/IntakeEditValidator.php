@@ -13,6 +13,13 @@ class IntakeEditValidator extends ConstraintValidator
 {
     private $entityManager;
     private $security;
+    const MEAL_TYPES = [
+        'Breakfast',
+        'Brunch',
+        'Lunch',
+        'Tea',
+        'Dinner',
+    ];
 
     public function __construct(EntityManagerInterface $entityManager, Security $security)
     {
@@ -36,13 +43,16 @@ class IntakeEditValidator extends ConstraintValidator
         $currentUser = $this->security->getUser();
         $originalIntake = $this->entityManager->getUnitOfWork()->getOriginalEntityData($value);
 
-        if($this->security->isGranted("ROLE_ADMIN")) return;
+        if ($this->security->isGranted("ROLE_ADMIN")) return;
 
-        if($originalIntake){
+        if ($originalIntake) {
             if ($value->getUser() !== $currentUser) {
                 $this->context->buildViolation('Not an owner of this object')
                     ->addViolation();
             }
+        if(!in_array($value->getMealType(),self::MEAL_TYPES)){
+            $this->context->buildViolation(sprintf("MealType can only be of type %s",implode(",",self::MEAL_TYPES)))->addViolation();
+        }
         }
     }
 }

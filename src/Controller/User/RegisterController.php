@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 
  class RegisterController extends AbstractController
 {
-
     private $userService;
 
     public function __construct(UserService $userService)
@@ -20,6 +19,4 @@ use Symfony\Component\HttpFoundation\Request;
     {
         $this->userService->register($request->attributes->get('dto'),$request->headers->get('host'));
     }
-
-
 }

@@ -123,11 +123,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *            "deserialize" = false,
  *        },
  *     },
- *     attributes={
- *          "pagination_items_per_page"=5
- *     }
  * )
- *
  *
  * @UniqueEntity(fields={"email", "username"}, message="There is already an account with this email or username")
  */

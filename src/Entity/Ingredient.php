@@ -29,9 +29,6 @@ use Doctrine\ORM\Mapping as ORM;
  *          "get",
  *          "post",
  *     },
- *     attributes={
- *          "pagination_items_per_page"=5
- *     }
  *     )
  *@IngredientEdit
  */
