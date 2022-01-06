@@ -23,7 +23,7 @@ class JWTCreatedSubscriber
         $data = array(
             'id' => $user->getUuid(),
             'roles' => $user->getRoles(),
-            'username' => $user->getUserIdentifier(),
+            'email' => $user->getUserIdentifier(),
         );
 
         $event->setData($data);
