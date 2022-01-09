@@ -39,9 +39,14 @@ class ProductAdmin extends AbstractAdmin
             ->add('brand', TextType::class)
             ->add('isVerified', BooleanType::class)
             ->add('deletedAt', DateTimeType::class,[
-                'data' => null,
-                'widget' => 'text',
-                'required' => null,
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => [
+                    'class' => 'combinedPickerInput',
+                    'placeholder' => null
+                ],
+                'format' => 'dd/MM/yyyy H:i',
+                'required' => false,
             ])
             ->add('proteins', NumberType::class)
             ->add('carbohydrates', NumberType::class)
