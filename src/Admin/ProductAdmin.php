@@ -40,6 +40,7 @@ class ProductAdmin extends AbstractAdmin
             ->add('isVerified', BooleanType::class)
             ->add('deletedAt', DateTimeType::class,[
                 'data' => null,
+                'widget' => 'text',
             ])
             ->add('proteins', NumberType::class)
             ->add('carbohydrates', NumberType::class)
