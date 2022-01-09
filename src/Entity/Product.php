@@ -52,6 +52,7 @@ class Product
     /**
      * @ORM\Column(type="uuid",unique=true)
      * @ApiProperty(identifier=true)
+     * @Groups({"product:read", "product:write", "intake:read"})
      */
     private $uuid;
 

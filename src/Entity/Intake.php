@@ -57,6 +57,7 @@ class Intake
     /**
      * @ORM\Column(type="uuid",unique=true)
      * @ApiProperty(identifier=true)
+     * @Groups({"intake:read","intake:write"})
      */
     private $uuid;
 
