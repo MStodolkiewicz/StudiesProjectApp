@@ -51,6 +51,7 @@ class Category
     /**
      * @ORM\Column(type="uuid",unique=true)
      * @ApiProperty(identifier=true)
+     * @Groups({"category:read", "category:write", "subcategory:read", "intake:read", "product:read"})
      */
     private $uuid;
 
