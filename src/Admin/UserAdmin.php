@@ -42,6 +42,7 @@ class UserAdmin extends AbstractAdmin
      */
     protected function preUpdate(object $object): void
     {
+        dd($object->getPassword());
         if($object->getPassword()){
             $object->setPassword($this->userPasswordHasher->hashPassword($object,$object->getPlainPassword()));
         }
