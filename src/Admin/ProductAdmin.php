@@ -41,6 +41,7 @@ class ProductAdmin extends AbstractAdmin
             ->add('deletedAt', DateTimeType::class,[
                 'data' => null,
                 'widget' => 'text',
+                'required' => null,
             ])
             ->add('proteins', NumberType::class)
             ->add('carbohydrates', NumberType::class)
