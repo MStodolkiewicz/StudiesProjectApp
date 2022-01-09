@@ -51,7 +51,7 @@ class UserAdmin extends AbstractAdmin
         $form->with($this->translator->trans('user.content', [], 'translations'))
             ->add('email', EmailType::class)
             ->add('username', TextType::class)
-            ->add('plainPassword', PasswordType::class,['label' => 'Password'])
+            ->add('plainPassword', PasswordType::class,['label' => 'Password','required' => false])
             ->add('isVerified', BooleanType::class,['label' => 'isVerified'])
             ->add('rolesAsString',TextType::class,['label'=>'Roles'])
             ->add('createdAt', DateTimeType::class, [
