@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -35,7 +36,7 @@ class UserAdmin extends AbstractAdmin
         $this->userPasswordHasher = $userPasswordHasher;
     }
 
-    private $fieldsArray = ['id', 'uuid', 'email', 'username','password', 'roles', 'height', 'weight', 'birthDate', 'createdAt'];
+    private $fieldsArray = ['id', 'uuid', 'email', 'username','password','isVerified', 'roles', 'height', 'weight', 'birthDate', 'createdAt'];
     /**
      * @param User $object
      */
@@ -51,6 +52,7 @@ class UserAdmin extends AbstractAdmin
             ->add('email', EmailType::class)
             ->add('username', TextType::class)
             ->add('plainPassword', PasswordType::class,['label' => 'Password'])
+            ->add('isVerified', BooleanType::class,['label' => 'isVerified'])
             ->add('rolesAsString',TextType::class,['label'=>'Roles'])
             ->add('createdAt', DateTimeType::class, [
                 'input' => 'datetime_immutable'
