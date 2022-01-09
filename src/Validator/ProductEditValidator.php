@@ -37,16 +37,8 @@ class ProductEditValidator extends ConstraintValidator
         $originalProduct = $this->entityManager->getUnitOfWork()->getOriginalEntityData($value);
 
         if($this->security->isGranted("ROLE_ADMIN")) return;
-        // New Product being created
-        $minimalKcal = $value->getFat() * KcalPerOneGramOf::FAT + $value->getCarbohydrates() * KcalPerOneGramOf::CARBOHYDRATES + $value->getProteins() * KcalPerOneGramOf::PROTEIN;
-
-        if($value->getKcal() < $minimalKcal){
-            $this->context->buildViolation('Number of supplied calories is smaller then summed calories of macronutrients')
-                ->addViolation();
-        }
 
         if(!$originalProduct){
-
         // Product being edited
         }else{
 
