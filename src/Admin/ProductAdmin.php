@@ -38,7 +38,9 @@ class ProductAdmin extends AbstractAdmin
             ->add('barCodeNumbers', TextType::class)
             ->add('brand', TextType::class)
             ->add('isVerified', BooleanType::class)
-            ->add('deletedAt', TextType::class)
+            ->add('deletedAt', DateTimeType::class,[
+                'data' => null,
+            ])
             ->add('proteins', NumberType::class)
             ->add('carbohydrates', NumberType::class)
             ->add('fat', NumberType::class)
