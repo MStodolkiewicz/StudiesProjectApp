@@ -43,7 +43,7 @@ class ProductAdmin extends AbstractAdmin
                 'html5' => false,
                 'attr' => [
                     'class' => 'combinedPickerInput',
-                    'placeholder' => date('dd/MM/yyyy H:i'),
+                    'placeholder' => date('d/M/y H:i'),
                 ],
                 'format' => 'dd/MM/yyyy H:i',
                 'required' => false,
