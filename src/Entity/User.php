@@ -380,12 +380,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getHeight(): ?string
+    public function getHeight(): ?float
     {
         return $this->height;
     }
 
-    public function setHeight(?string $height): self
+    public function setHeight(?float $height): self
     {
         $this->height = $height;
 
